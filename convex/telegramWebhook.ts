@@ -1,10 +1,6 @@
 import { httpAction } from "./_generated/server";
-import { Bot, webhookCallback } from "grammy";
-
-const bot = new Bot(process.env.TELEGRAM_BOT_SECRET!);
-
-bot.command("start", (ctx) => ctx.reply("Welcome! Up and running."));
-bot.command("ping", (ctx) => ctx.reply(`Pong! ${new Date().toISOString()}`));
+import { webhookCallback } from "grammy";
+import bot from "./bot";
 
 const handleUpdate = webhookCallback(bot, "std/http");
 
