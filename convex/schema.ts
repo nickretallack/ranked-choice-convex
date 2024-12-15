@@ -10,4 +10,7 @@ export default defineSchema({
     author: v.string(),
     body: v.string(),
   }),
+  poll: defineTable({
+    title: v.string(),
+  }),
 });

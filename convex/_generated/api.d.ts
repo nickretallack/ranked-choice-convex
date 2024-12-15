@@ -16,6 +16,7 @@ import type {
 import type * as bot from "../bot.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
+import type * as polls from "../polls.js";
 import type * as telegram from "../telegram.js";
 import type * as telegramWebhook from "../telegramWebhook.js";
 
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   bot: typeof bot;
   http: typeof http;
   messages: typeof messages;
+  polls: typeof polls;
   telegram: typeof telegram;
   telegramWebhook: typeof telegramWebhook;
 }>;

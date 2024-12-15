@@ -107,7 +107,7 @@ bot.on("inline_query", async (ctx) => {
       text: "Make a new poll",
       // start_parameter: "new",
       web_app: {
-        url: `${process.env.TELEGRAM_MINI_APP_URL}/telegram/newpoll`,
+        url: `${process.env.TELEGRAM_MINI_APP_URL}/telegram/polls/new`,
       },
     },
     cache_time: 0,
