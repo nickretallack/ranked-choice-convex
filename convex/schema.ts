@@ -13,6 +13,7 @@ export default defineSchema({
   poll: defineTable({
     title: v.string(),
     creatorId: v.optional(v.id("user")),
+    allowNominations: v.boolean(),
   }).index("by_creatorId", ["creatorId"]),
   candidate: defineTable({
     name: v.string(),

@@ -3,14 +3,18 @@ import { mutation, query } from "../_generated/server";
 import { trimList } from "../util/normalizeWhitespace";
 
 export const create = mutation({
-  args: { title: v.string(), candidates: v.array(v.string()) },
-  handler: async (ctx, { title, candidates }) => {
-    const pollId = await ctx.db.insert("poll", { title });
+  args: {
+    title: v.string(),
+    candidates: v.array(v.string()),
+    allowNominations: v.boolean(),
+  },
+  handler: async (ctx, { title, candidates, allowNominations }) => {
+    const pollId = await ctx.db.insert("poll", { title, allowNominations });
     await Promise.all(
       trimList(candidates).map((candidate) =>
         ctx.db.insert("candidate", {
           name: candidate,
-          pollId: pollId,
+          pollId,
         }),
       ),
     );

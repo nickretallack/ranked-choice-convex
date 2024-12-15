@@ -17,8 +17,9 @@ export default function NewPoll() {
       const formData = new FormData(form);
       const title = formData.get("title") as string;
       const candidates = trimList(formData.getAll("candidate") as string[]);
+      const allowNominations = formData.get("allowNominations") === "on";
 
-      const id = await createPoll({ title, candidates });
+      const id = await createPoll({ title, candidates, allowNominations });
       Telegram?.switchInlineQuery(id);
     }) as () => void;
 
