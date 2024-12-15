@@ -1,10 +1,11 @@
 import { httpAction } from "./_generated/server";
 import { webhookCallback } from "grammy";
-import bot from "./bot";
-
-const handleUpdate = webhookCallback(bot, "std/http");
+import { createBot } from "./bot";
 
 export const webhook = httpAction(async (ctx, req) => {
+  const bot = createBot(ctx);
+  const handleUpdate = webhookCallback(bot, "std/http");
+
   try {
     const url = new URL(req.url);
     if (url.searchParams.get("token") !== bot.token) {
