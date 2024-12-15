@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as candidate from "../candidate.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
 import type * as poll from "../poll.js";
@@ -21,6 +22,7 @@ import type * as telegram_bot from "../telegram/bot.js";
 import type * as telegram_poll from "../telegram/poll.js";
 import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
+import type * as util_normalizeWhitespace from "../util/normalizeWhitespace.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -31,6 +33,7 @@ import type * as telegram_webhook from "../telegram/webhook.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  candidate: typeof candidate;
   http: typeof http;
   messages: typeof messages;
   poll: typeof poll;
@@ -39,6 +42,7 @@ declare const fullApi: ApiFromModules<{
   "telegram/poll": typeof telegram_poll;
   "telegram/user": typeof telegram_user;
   "telegram/webhook": typeof telegram_webhook;
+  "util/normalizeWhitespace": typeof util_normalizeWhitespace;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

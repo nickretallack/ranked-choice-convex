@@ -17,7 +17,7 @@ export const upsert = mutation({
 
     const existingUser = await ctx.db
       .query("telegramUser")
-      .withIndex("by_telegram_user_id", (q) =>
+      .withIndex("by_telegramUserId", (q) =>
         q.eq("telegramUserId", telegramUserId),
       )
       .unique();

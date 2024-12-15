@@ -1,20 +1,24 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Telegram from "@twa-dev/sdk";
-import { api } from "../../convex/_generated/api";
+import { api } from "@convex/_generated/api";
 import { useMutation } from "convex/react";
+import CandidateListEditor from "@/components/CandidateListEditor";
+import { trimList } from "@convex/util/normalizeWhitespace";
 
 export default function NewPoll() {
   const formRef = useRef<HTMLFormElement>(null);
-  // const [candidates, setCandidates] = useState([""]);
+  const [candidates, setCandidates] = useState([""]);
   // const [errors, setErrors] = useState<Record<string, string>>({});
-  const createPoll = useMutation(api.poll.create);
+  const createPoll = useMutation(api.telegram.poll.create);
 
   useEffect(() => {
     const handler = (async () => {
       const form = formRef.current!;
       const formData = new FormData(form);
-      const id = await createPoll({ title: formData.get("title") as string });
+      const title = formData.get("title") as string;
+      const candidates = trimList(formData.getAll("candidate") as string[]);
 
+      const id = await createPoll({ title, candidates });
       Telegram?.switchInlineQuery(id);
     }) as () => void;
 
@@ -40,6 +44,25 @@ export default function NewPoll() {
           />
           {/* {errors?.title && <p className="error">{errors.title}</p>} */}
         </div>
+
+        <h2>Candidates</h2>
+
+        <div className="control">
+          <label htmlFor="allowNominations">
+            <input
+              name="allowNominations"
+              type="checkbox"
+              id="allowNominations"
+              defaultChecked={false}
+            />
+            Allow voters to nominate new candidates.
+          </label>
+        </div>
+
+        <CandidateListEditor
+          candidates={candidates}
+          setCandidates={setCandidates}
+        />
       </form>
     </div>
   );

@@ -12,8 +12,13 @@ export default defineSchema({
   }),
   poll: defineTable({
     title: v.string(),
-    userId: v.optional(v.id("user")),
-  }),
+    creatorId: v.optional(v.id("user")),
+  }).index("by_creatorId", ["creatorId"]),
+  candidate: defineTable({
+    name: v.string(),
+    pollId: v.id("poll"),
+    creatorId: v.optional(v.id("user")),
+  }).index("by_pollId", ["pollId"]),
   telegramInlineMessage: defineTable({
     pollId: v.id("poll"),
     inlineMessageId: v.string(),
@@ -27,7 +32,7 @@ export default defineSchema({
     last_name: v.optional(v.string()),
     photo_url: v.optional(v.string()),
   })
-    .index("by_telegram_user_id", ["telegramUserId"])
-    .index("by_user_id", ["userId"]),
+    .index("by_telegramUserId", ["telegramUserId"])
+    .index("by_userId", ["userId"]),
   user: defineTable({}),
 });

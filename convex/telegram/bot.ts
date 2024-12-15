@@ -73,10 +73,21 @@ export function createBot(convexCtx: ActionCtx) {
     } as InlineQueryResultArticle;
   }
 
+  const answerInlineQueryOptions = {
+    button: {
+      text: "Make a new poll",
+      web_app: {
+        url: `${process.env.TELEGRAM_MINI_APP_URL}/telegram/polls/new`,
+      },
+    },
+    cache_time: 0,
+  };
+
   bot.on("inline_query", async (telegramCtx) => {
     if (telegramCtx.from == null) return null;
     const { query } = telegramCtx.inlineQuery;
 
+    let polls: Poll[] = [];
     if (query) {
       const poll = await convexCtx.runQuery(api.poll.get, {
         id: query as Id<"poll">,
@@ -88,21 +99,20 @@ export function createBot(convexCtx: ActionCtx) {
         });
         await convexCtx.runMutation(api.telegram.poll.claim, {
           pollId: poll._id,
-          userId,
+          creatorId: userId,
         });
-        return telegramCtx.answerInlineQuery([pollToAnswer(poll)]);
+        polls = [poll];
       }
+    } else {
+      polls = await convexCtx.runQuery(api.telegram.poll.listForUser, {
+        telegramUserId: telegramCtx.from.id,
+      });
     }
 
-    telegramCtx.answerInlineQuery([], {
-      button: {
-        text: "Make a new poll",
-        web_app: {
-          url: `${process.env.TELEGRAM_MINI_APP_URL}/telegram/polls/new`,
-        },
-      },
-      cache_time: 0,
-    });
+    return telegramCtx.answerInlineQuery(
+      polls.map(pollToAnswer),
+      answerInlineQueryOptions,
+    );
   });
 
   function getPollTitle(poll: Poll) {
