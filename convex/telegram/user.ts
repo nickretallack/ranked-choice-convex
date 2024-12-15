@@ -12,7 +12,6 @@ export const upsert = mutation({
     }),
   },
   handler: async (ctx, { user }) => {
-    console.log("RUNNING THE QUERY", user);
     const { id: telegramUserId, ...rest } = user;
 
     const existingUser = await ctx.db
@@ -23,14 +22,12 @@ export const upsert = mutation({
       .unique();
 
     if (existingUser) {
-      console.log("EXISTING USER", existingUser);
       if (
         existingUser.username !== rest.username ||
         existingUser.first_name !== rest.first_name ||
         existingUser.last_name !== rest.last_name ||
         existingUser.photo_url !== rest.photo_url
       ) {
-        console.log("UPDATING USER", rest);
         await ctx.db.patch(existingUser._id, rest);
       }
 
