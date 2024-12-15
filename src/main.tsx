@@ -5,7 +5,7 @@ import { ConvexProvider, ConvexReactClient } from "convex/react";
 import App from "./App.tsx";
 import "./index.css";
 import { BrowserRouter, Route, Routes } from "react-router";
-import NewPoll from "./telegram/NewPoll.tsx";
+import TelegramRoutes from "./telegram/routes.tsx";
 
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
@@ -16,7 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<App />} />
-            <Route path="/telegram/polls/new" element={<NewPoll />} />
+            {TelegramRoutes}
           </Routes>
         </BrowserRouter>
       </ConvexProvider>
