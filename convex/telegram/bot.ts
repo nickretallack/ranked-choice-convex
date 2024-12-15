@@ -4,8 +4,6 @@ if (!(process.env.TELEGRAM_BOT_SECRET && process.env.TELEGRAM_BOT_NAME)) {
   );
 }
 
-import { ActionCtx } from "./_generated/server";
-import { api } from "./_generated/api";
 import { Api, Bot, Context, InlineKeyboard } from "grammy";
 import {
   hydrateApi,
@@ -14,7 +12,10 @@ import {
   HydrateFlavor,
 } from "@grammyjs/hydrate";
 import type { InlineQueryResultArticle } from "grammy/types";
-import { Id } from "./_generated/dataModel";
+
+import { ActionCtx } from "../_generated/server";
+import { api } from "../_generated/api";
+import { Id } from "../_generated/dataModel";
 
 type Poll = {
   _id: Id<"poll">;
@@ -77,10 +78,18 @@ export function createBot(convexCtx: ActionCtx) {
     const { query } = telegramCtx.inlineQuery;
 
     if (query) {
-      const poll = await convexCtx.runQuery(api.polls.get, {
+      const poll = await convexCtx.runQuery(api.poll.get, {
         id: query as Id<"poll">,
       });
       if (poll) {
+        const { id, first_name, last_name, username } = telegramCtx.from;
+        const userId = await convexCtx.runMutation(api.telegram.user.upsert, {
+          user: { id, first_name, last_name, username },
+        });
+        await convexCtx.runMutation(api.telegram.poll.claim, {
+          pollId: poll._id,
+          userId,
+        });
         return telegramCtx.answerInlineQuery([pollToAnswer(poll)]);
       }
     }
@@ -106,32 +115,36 @@ export function createBot(convexCtx: ActionCtx) {
     }/app?startapp=${poll._id})`;
   }
 
-  // function makePollMessage(
-  //   poll: NonNullable<Awaited<ReturnType<typeof getPollResultsForTelegram>>>,
-  // ) {
-  //   const resultsText = poll.results
-  //     .map(
-  //       (result) =>
-  //         `${result.round + 1}: ${result.candidate.name}: ${result.finalVotes}`,
-  //     )
-  //     .join("\n");
-  //   return `${getPollLink(poll)}\n${resultsText}`;
-  // }
+  function makePollMessage(poll: Poll) {
+    // const resultsText = poll.results
+    //   .map(
+    //     (result) =>
+    //       `${result.round + 1}: ${result.candidate.name}: ${result.finalVotes}`,
+    //   )
+    //   .join("\n");
+    const resultsText = ""; // TODO
+    return `${getPollLink(poll)}\n${resultsText}`;
+  }
 
-  // bot.on("chosen_inline_result", async (ctx) => {
-  //   const { result_id, inline_message_id } = ctx.chosenInlineResult;
-  //   if (!(result_id && inline_message_id)) return;
-  //   const pollId = parseInt(result_id);
+  bot.on("chosen_inline_result", async (ctx) => {
+    const { result_id, inline_message_id } = ctx.chosenInlineResult;
+    if (!(result_id && inline_message_id)) return;
 
-  //   const poll = await getPollResultsForTelegram(pollId);
-  //   if (!poll) return;
+    const poll = await convexCtx.runQuery(api.poll.get, {
+      id: result_id as Id<"poll">,
+    });
+    if (!poll) return;
 
-  //   const messageText = makePollMessage(poll);
-  //   await bot.api.editMessageTextInline(inline_message_id, messageText, {
-  //     parse_mode: "MarkdownV2",
-  //   });
-  //   await addInlineMessageToPoll(pollId, inline_message_id, messageText);
-  // });
+    const messageText = makePollMessage(poll);
+    await bot.api.editMessageTextInline(inline_message_id, messageText, {
+      parse_mode: "MarkdownV2",
+    });
+    await convexCtx.runMutation(api.telegram.poll.addInlineMessage, {
+      pollId: poll._id,
+      inlineMessageId: inline_message_id,
+      messageText,
+    });
+  });
 
   // Redis
   // const redisClient = new Redis();

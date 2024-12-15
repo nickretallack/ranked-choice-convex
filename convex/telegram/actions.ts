@@ -2,7 +2,7 @@
 
 import { validateWebAppData } from "@grammyjs/validator";
 import { v } from "convex/values";
-import { action } from "./_generated/server";
+import { action } from "../_generated/server";
 
 export const validateUser = action({
   args: {

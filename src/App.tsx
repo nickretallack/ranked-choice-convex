@@ -11,7 +11,7 @@ import { useAction } from "convex/react";
 export default function App() {
   const [viewer] = useState(randomName());
 
-  const validateUser = useAction(api.telegram.validateUser);
+  const validateUser = useAction(api.telegram.actions.validateUser);
   useEffect(() => {
     validateUser({ initData: Telegram.initData }).then(
       (isValid) => {

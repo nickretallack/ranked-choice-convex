@@ -7,7 +7,7 @@ export default function NewPoll() {
   const formRef = useRef<HTMLFormElement>(null);
   // const [candidates, setCandidates] = useState([""]);
   // const [errors, setErrors] = useState<Record<string, string>>({});
-  const createPoll = useMutation(api.polls.create);
+  const createPoll = useMutation(api.poll.create);
 
   useEffect(() => {
     const handler = (async () => {

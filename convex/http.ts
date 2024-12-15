@@ -1,5 +1,5 @@
 import { httpRouter } from "convex/server";
-import { webhook } from "./telegramWebhook";
+import { webhook } from "./telegram/webhook";
 
 const http = httpRouter();
 

@@ -1,4 +1,4 @@
-import { httpAction } from "./_generated/server";
+import { httpAction } from "../_generated/server";
 import { webhookCallback } from "grammy";
 import { createBot } from "./bot";
 
