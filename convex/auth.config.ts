@@ -3,27 +3,27 @@
 
 export default {
   providers: [
-    // {
-    //   domain: "https://witty-slug-31.clerk.accounts.dev",
-    //   applicationID: "convex",
-    // },
+    {
+      domain: "https://witty-slug-31.clerk.accounts.dev",
+      applicationID: "convex",
+    },
     // {
     //   domain: "https://lovely-ox-258.convex.site",
     //   applicationID: "convex2",
     // },
-    {
-      domain: "https://lovely-ox-258.convex.site",
-      applicationID: "convex",
-      // validateToken: async (token) => {
-      //   return {
-      //     sub: token.sub,
-      //     // Include other user info you want available in ctx.auth
-      //     name: token.name,
-      //     picture: token.picture,
-      //     nickname: token.nickname,
-      //   };
-      // },
-    },
+    // {
+    //   domain: "https://lovely-ox-258.convex.site",
+    //   applicationID: "convex",
+    //   // validateToken: async (token) => {
+    //   //   return {
+    //   //     sub: token.sub,
+    //   //     // Include other user info you want available in ctx.auth
+    //   //     name: token.name,
+    //   //     picture: token.picture,
+    //   //     nickname: token.nickname,
+    //   //   };
+    //   // },
+    // },
     // {
     //   domain:
     // }
