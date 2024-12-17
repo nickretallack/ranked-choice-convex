@@ -33,10 +33,13 @@ export const validateUser = action({
 
     return await new SignJWT({
       sub: userId,
+      iss: "https://lovely-ox-258.convex.site",
+      iat: Math.floor(Date.now() / 1000),
       aud: "convex",
+      exp: Math.floor(Date.now() / 1000) + 24 * 60 * 60,
       name: `${first_name} ${last_name}`,
       picture: photo_url,
-      nickname: username,
+      preferred_username: username,
       given_name: first_name,
       family_name: last_name,
     })
