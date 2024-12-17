@@ -51,7 +51,7 @@ export const validateUser = action({
       clerkUserId = user.clerkUserId;
     } else {
       const clerkUser = await clerkClient.users.createUser({
-        username: user._id,
+        username: `user:${user._id}`,
         externalId: user._id,
         firstName: telegramUserDetails.first_name,
         lastName: telegramUserDetails.last_name,
