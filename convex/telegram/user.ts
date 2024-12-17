@@ -1,18 +1,10 @@
 import { v } from "convex/values";
 import { mutation } from "../_generated/server";
+import { telegramUserDetailsFields } from "../schema";
 
-const telegramUserDetailsSpec = v.object({
-  telegramUserId: v.number(),
-  username: v.optional(v.string()),
-  first_name: v.optional(v.string()),
-  last_name: v.optional(v.string()),
-  photo_url: v.optional(v.string()),
-});
-
-// TODO: remove this
 export const upsert = mutation({
   args: {
-    telegramUserDetails: telegramUserDetailsSpec,
+    telegramUserDetails: v.object(telegramUserDetailsFields),
   },
   handler: async (ctx, { telegramUserDetails }) => {
     const { telegramUserId, ...rest } = telegramUserDetails;

@@ -5,6 +5,15 @@ import { v } from "convex/values";
 // You can delete this file (schema.ts) and the
 // app will continue to work.
 // The schema provides more precise TypeScript types.
+
+export const telegramUserDetailsFields = {
+  telegramUserId: v.number(),
+  username: v.optional(v.string()),
+  first_name: v.optional(v.string()),
+  last_name: v.optional(v.string()),
+  photo_url: v.optional(v.string()),
+};
+
 export default defineSchema({
   messages: defineTable({
     author: v.string(),
@@ -27,11 +36,7 @@ export default defineSchema({
   }),
   telegramUser: defineTable({
     userId: v.id("user"),
-    telegramUserId: v.number(),
-    username: v.optional(v.string()),
-    first_name: v.optional(v.string()),
-    last_name: v.optional(v.string()),
-    photo_url: v.optional(v.string()),
+    ...telegramUserDetailsFields,
   })
     .index("by_telegramUserId", ["telegramUserId"])
     .index("by_userId", ["userId"]),
