@@ -40,18 +40,19 @@ export const validateUser = action({
     // Validate Telegram initData
     const telegramUserDetails = validateInitData(initData);
 
-    // Check if we already have a clerk user for this telegram user
-    const existingTelegramUser = await ctx.runMutation(
-      api.telegram.user.getAndUpdate,
-      { telegramUserDetails },
-    );
+    // Upsert the Telegram user in our database
+    const { user } = await ctx.runMutation(api.telegram.user.upsert, {
+      telegramUserDetails,
+    });
 
+    // Create a Clerk user if we don't have one
     let clerkUserId: string;
-    if (existingTelegramUser) {
-      clerkUserId = existingTelegramUser.user.clerkUserId;
+    if (user.clerkUserId) {
+      clerkUserId = user.clerkUserId;
     } else {
-      // Create a new clerk user
       const clerkUser = await clerkClient.users.createUser({
+        username: user._id,
+        externalId: user._id,
         firstName: telegramUserDetails.first_name,
         lastName: telegramUserDetails.last_name,
         publicMetadata: {
@@ -62,15 +63,16 @@ export const validateUser = action({
           telegramLastName: telegramUserDetails.last_name,
         },
       });
-      clerkUserId = clerkUser.id;
 
-      await ctx.runMutation(api.telegram.user.create, {
+      // Set the Clerk user id in our database
+      await ctx.runMutation(api.telegram.user.setClerkUserId, {
+        userId: user._id,
         clerkUserId: clerkUser.id,
-        telegramUserDetails,
       });
+      clerkUserId = clerkUser.id;
     }
 
-    // Return a sign in token for the clerk user
+    // Return a sign in token for the Clerk user
     const signInToken = await clerkClient.signInTokens.createSignInToken({
       userId: clerkUserId,
       expiresInSeconds: 60 * 60 * 24 * 30,

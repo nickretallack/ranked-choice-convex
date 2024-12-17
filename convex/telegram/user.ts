@@ -10,67 +10,7 @@ const telegramUserDetailsSpec = v.object({
 });
 
 // TODO: remove this
-// export const upsert = mutation({
-//   args: {
-//     user: v.object({
-//       id: v.number(),
-//       username: v.optional(v.string()),
-//       first_name: v.optional(v.string()),
-//       last_name: v.optional(v.string()),
-//       photo_url: v.optional(v.string()),
-//     }),
-//   },
-//   handler: async (ctx, { user }) => {
-//     const { id: telegramUserId, ...rest } = user;
-
-//     const existingTelegramUser = await ctx.db
-//       .query("telegramUser")
-//       .withIndex("by_telegramUserId", (q) =>
-//         q.eq("telegramUserId", telegramUserId),
-//       )
-//       .unique();
-
-//     if (existingTelegramUser) {
-//       if (
-//         existingTelegramUser.username !== rest.username ||
-//         existingTelegramUser.first_name !== rest.first_name ||
-//         existingTelegramUser.last_name !== rest.last_name ||
-//         existingTelegramUser.photo_url !== rest.photo_url
-//       ) {
-//         await ctx.db.patch(existingTelegramUser._id, rest);
-//       }
-
-//       return { userId: existingTelegramUser.userId, created: false };
-//     }
-
-//     const userId = await ctx.db.insert("user", {});
-
-//     await ctx.db.insert("telegramUser", {
-//       userId,
-//       telegramUserId,
-//       ...rest,
-//     });
-
-//     return { userId, created: true };
-//   },
-// });
-
-export const create = mutation({
-  args: {
-    clerkUserId: v.string(),
-    telegramUserDetails: telegramUserDetailsSpec,
-  },
-  handler: async (ctx, { clerkUserId, telegramUserDetails }) => {
-    const userId = await ctx.db.insert("user", { clerkUserId });
-    await ctx.db.insert("telegramUser", {
-      userId,
-      ...telegramUserDetails,
-    });
-    return userId;
-  },
-});
-
-export const getAndUpdate = mutation({
+export const upsert = mutation({
   args: {
     telegramUserDetails: telegramUserDetailsSpec,
   },
@@ -85,6 +25,7 @@ export const getAndUpdate = mutation({
       .unique();
 
     if (telegramUser) {
+      // Update cached telegram details
       const changed =
         telegramUser.username !== rest.username ||
         telegramUser.first_name !== rest.first_name ||
@@ -94,12 +35,30 @@ export const getAndUpdate = mutation({
         await ctx.db.patch(telegramUser._id, rest);
       }
 
-      const user = await ctx.db.get(telegramUser.userId);
-      if (!user) {
-        throw new Error("User not found");
-      }
-      return { telegramUser, user, changed };
+      // Return existing user
+      const user = (await ctx.db.get(telegramUser.userId))!;
+      return { user, changed, created: false };
     }
-    return null;
+
+    // Create a new user
+    const userId = await ctx.db.insert("user", {});
+    const user = (await ctx.db.get(userId))!;
+    await ctx.db.insert("telegramUser", {
+      userId,
+      telegramUserId,
+      ...rest,
+    });
+
+    return { user, changed: false, created: true };
+  },
+});
+
+export const setClerkUserId = mutation({
+  args: {
+    userId: v.id("user"),
+    clerkUserId: v.string(),
+  },
+  handler: async (ctx, { userId, clerkUserId }) => {
+    await ctx.db.patch(userId, { clerkUserId });
   },
 });

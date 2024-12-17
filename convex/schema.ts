@@ -36,6 +36,6 @@ export default defineSchema({
     .index("by_telegramUserId", ["telegramUserId"])
     .index("by_userId", ["userId"]),
   user: defineTable({
-    clerkUserId: v.string(),
+    clerkUserId: v.optional(v.string()),
   }),
 });

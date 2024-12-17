@@ -94,17 +94,19 @@ export function createBot(convexCtx: ActionCtx) {
       });
       if (poll) {
         const { id, first_name, last_name, username } = telegramCtx.from;
-        // const { userId } = await convexCtx.runMutation(
-        //   api.telegram.user.upsert,
-        //   {
-        //     user: { id, first_name, last_name, username },
-        //   },
-        // );
-        // await convexCtx.runMutation(api.telegram.poll.claim, {
-        //   pollId: poll._id,
-        //   creatorId: userId,
-        // });
-        // polls = [poll];
+        const { user } = await convexCtx.runMutation(api.telegram.user.upsert, {
+          telegramUserDetails: {
+            telegramUserId: id,
+            first_name,
+            last_name,
+            username,
+          },
+        });
+        await convexCtx.runMutation(api.telegram.poll.claim, {
+          pollId: poll._id,
+          creatorId: user._id,
+        });
+        polls = [poll];
       }
     } else {
       polls = await convexCtx.runQuery(api.telegram.poll.listForUser, {
