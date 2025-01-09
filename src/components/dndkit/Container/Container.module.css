@@ -1,0 +1,31 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  grid-auto-rows: max-content;
+  overflow: hidden;
+  box-sizing: border-box;
+  appearance: none;
+  outline: none;
+  /* min-width: 350px; */
+  border-radius: 5px;
+  /* min-height: 80px; */
+  transition: background-color 350ms ease;
+  font-size: 1em;
+
+  overflow: auto;
+
+  &.hover {
+    background-color: rgb(235, 235, 235, 0.2);
+  }
+
+  &.unstyled {
+    overflow: visible;
+    background-color: transparent !important;
+    border: none !important;
+  }
+
+  &:focus-visible {
+    border-color: transparent;
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), 0 0px 0px 2px #4c9ffe;
+  }
+}

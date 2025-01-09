@@ -8,7 +8,7 @@ import {
   useAction,
 } from "convex/react";
 import App from "./App.tsx";
-import "./index.css";
+import "./main.css";
 import { BrowserRouter, Route, Routes } from "react-router";
 import TelegramRoutes from "./telegram/routes.tsx";
 import { api } from "@convex/_generated/api.js";

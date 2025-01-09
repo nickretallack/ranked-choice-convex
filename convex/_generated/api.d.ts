@@ -13,6 +13,7 @@ import type {
   FilterApi,
   FunctionReference,
 } from "convex/server";
+import type * as ballot from "../ballot.js";
 import type * as candidate from "../candidate.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
@@ -34,6 +35,7 @@ import type * as util_normalizeWhitespace from "../util/normalizeWhitespace.js";
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  ballot: typeof ballot;
   candidate: typeof candidate;
   http: typeof http;
   messages: typeof messages;

@@ -1,0 +1,18 @@
+.Item {
+  transform: translate3d(var(--translate-x, 0), var(--translate-y, 0), 0);
+  transform-origin: 0 0;
+  position: relative;
+
+  list-style: none;
+
+  display: flex;
+  align-items: center;
+  /* gap: 10px; */
+
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+
+  &.hidden {
+    opacity: 0;
+  }
+}

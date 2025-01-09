@@ -29,6 +29,19 @@ export default defineSchema({
     pollId: v.id("poll"),
     creatorId: v.optional(v.id("user")),
   }).index("by_pollId", ["pollId"]),
+  ballot: defineTable({
+    userId: v.id("user"),
+    pollId: v.id("poll"),
+    ranking: v.array(v.id("candidate")),
+  }),
+  results: defineTable({
+    pollId: v.id("poll"),
+    candidates: v.record(v.id("candidate"), v.array(v.number())),
+    eliminations: v.array(v.object({
+      candidateId: v.id("candidate"),
+      round: v.number(),
+    })),
+  }),
   telegramInlineMessage: defineTable({
     pollId: v.id("poll"),
     inlineMessageId: v.string(),

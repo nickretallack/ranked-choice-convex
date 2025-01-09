@@ -8,6 +8,7 @@ import { useClerk, useSignIn, useUser } from "@clerk/clerk-react";
 export default function Start() {
   const navigate = useNavigate();
   const { pathname, search, hash } = useLocation();
+  const redirectUrl = `${pathname}${search}${hash}`;
   const validateUser = useAction(api.telegram.actions.validateUser);
   const { isLoaded, signIn, setActive } = useSignIn();
   const { signOut } = useClerk();
@@ -16,12 +17,11 @@ export default function Start() {
 
   const nextStep = useCallback(async () => {
     const pollId = Telegram.initDataUnsafe.start_param;
-    await navigate(`/telegram/poll/${pollId}`);
+    await navigate(`/telegram/poll/${pollId}/vote`);
   }, [navigate]);
 
   const seamlessSignIn = useCallback(async () => {
     if (!isLoaded) return;
-    await signOut({ redirectUrl: `${pathname}${search}${hash}` });
 
     // Check who's currently signed in
     if (isSignedIn) {
@@ -32,7 +32,7 @@ export default function Start() {
         return await nextStep();
       } else {
         // Someone else is signed in.  Log out and redirect back to here to try again.
-        return await signOut({ redirectUrl: `${pathname}${search}${hash}` });
+        return await signOut({ redirectUrl });
       }
     }
 
@@ -71,9 +71,7 @@ export default function Start() {
     setActive,
     validateUser,
     nextStep,
-    pathname,
-    search,
-    hash,
+    redirectUrl,
   ]);
 
   useEffect(() => {

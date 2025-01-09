@@ -76,16 +76,3 @@
     @apply bg-background text-foreground;
   }
 }
-
-
-
-
-
-.form-control label {
-  display: block;
-}
-
-.form-control input {
-  display: block;
-  font-size:inherit;
-}
