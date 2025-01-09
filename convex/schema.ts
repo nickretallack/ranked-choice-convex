@@ -33,7 +33,7 @@ export default defineSchema({
     userId: v.id("user"),
     pollId: v.id("poll"),
     ranking: v.array(v.id("candidate")),
-  }),
+  }).index("by_userId_pollId", ["userId", "pollId"]),
   results: defineTable({
     pollId: v.id("poll"),
     candidates: v.record(v.id("candidate"), v.array(v.number())),

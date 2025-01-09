@@ -20,10 +20,8 @@ export default function VotePageLoader() {
   const pollId = useParams().pollId! as Id<"poll">;
   const poll = useQuery(api.poll.get, { id: pollId });
   const candidates = useQuery(api.candidate.list, { pollId });
-  const ranking = [] as Id<"candidate">[];
+  const ranking = useQuery(api.ballot.get, { pollId });
   const { user } = useUser();
-  console.log("Poll", poll);
-  console.table({ poll, candidates, ranking, user });
 
   if (!(poll && candidates && ranking)) return null;
 
