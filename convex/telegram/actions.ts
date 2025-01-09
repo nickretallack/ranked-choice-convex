@@ -6,6 +6,7 @@ import { action } from "../_generated/server";
 import type { WebAppUser } from "@twa-dev/types";
 import { api } from "../_generated/api";
 import { createClerkClient } from "@clerk/backend";
+import { ClerkUser } from "../userHelpers";
 
 const clerkClient = createClerkClient({
   secretKey: process.env.CLERK_SECRET_KEY,
@@ -62,7 +63,7 @@ export const validateUser = action({
           telegramFirstName: telegramUserDetails.first_name,
           telegramLastName: telegramUserDetails.last_name,
         },
-      });
+      } as ClerkUser);
 
       // Set the Clerk user id in our database
       await ctx.runMutation(api.telegram.user.setClerkUserId, {

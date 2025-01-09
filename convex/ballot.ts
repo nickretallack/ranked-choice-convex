@@ -1,5 +1,6 @@
 import { v } from "convex/values";
 import { mutation } from "./_generated/server";
+import { requireUser } from "./userHelpers";
 
 export const save = mutation({
   args: {
@@ -7,16 +8,12 @@ export const save = mutation({
     ranking: v.array(v.id("candidate")),
   },
   handler: async (ctx, { pollId, ranking }) => {
-    const identity = await ctx.auth.getUserIdentity();
-    if (!identity) {
-      throw new Error("Unauthorized");
-    }
-    console.log("identity", identity);
-    // const userId = identity.subject;
-    // return await ctx.db.insert("ballot", {
-    //   pollId,
-    //   ranking,
-    //   userId: identity.subject,
-    // });
+    const userId = (await requireUser(ctx)).id;
+    console.log("userId", userId);
+    return await ctx.db.insert("ballot", {
+      pollId,
+      userId,
+      ranking,
+    });
   },
 });

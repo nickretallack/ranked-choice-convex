@@ -9,7 +9,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Telegram from "@twa-dev/sdk";
 import { useParams } from "react-router";
 import { api } from "@convex/_generated/api";
-import { useConvexAuth, useMutation, useQuery } from "convex/react";
+import { useMutation, useQuery } from "convex/react";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@/util/indexByUniqueIdentifier";
 import PollPage from "@/components/PollPage";

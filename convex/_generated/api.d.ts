@@ -24,6 +24,7 @@ import type * as telegram_openid from "../telegram/openid.js";
 import type * as telegram_poll from "../telegram/poll.js";
 import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
+import type * as userHelpers from "../userHelpers.js";
 import type * as util_normalizeWhitespace from "../util/normalizeWhitespace.js";
 
 /**
@@ -46,6 +47,7 @@ declare const fullApi: ApiFromModules<{
   "telegram/poll": typeof telegram_poll;
   "telegram/user": typeof telegram_user;
   "telegram/webhook": typeof telegram_webhook;
+  userHelpers: typeof userHelpers;
   "util/normalizeWhitespace": typeof util_normalizeWhitespace;
 }>;
 export declare const api: FilterApi<
