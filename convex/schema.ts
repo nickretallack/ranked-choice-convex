@@ -33,14 +33,18 @@ export default defineSchema({
     userId: v.id("user"),
     pollId: v.id("poll"),
     ranking: v.array(v.id("candidate")),
-  }).index("by_userId_pollId", ["userId", "pollId"]),
+  })
+    .index("by_userId_pollId", ["userId", "pollId"])
+    .index("by_pollId", ["pollId"]),
   results: defineTable({
     pollId: v.id("poll"),
     candidates: v.record(v.id("candidate"), v.array(v.number())),
-    eliminations: v.array(v.object({
-      candidateId: v.id("candidate"),
-      round: v.number(),
-    })),
+    eliminations: v.array(
+      v.object({
+        candidateId: v.id("candidate"),
+        round: v.number(),
+      }),
+    ),
   }),
   telegramInlineMessage: defineTable({
     pollId: v.id("poll"),

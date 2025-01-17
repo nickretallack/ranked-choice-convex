@@ -1,7 +1,7 @@
 import { Route } from "react-router";
 import NewPoll from "./NewPoll";
+import Results from "./Results";
 import Start from "./Start";
-import Poll from "./Poll";
 import Vote from "./Vote";
 
 const TelegramRoutes = (
@@ -10,6 +10,7 @@ const TelegramRoutes = (
     <Route path="start" element={<Start />} />
     <Route path="poll/:pollId">
       <Route path="vote" element={<Vote />} />
+      <Route path="results" element={<Results />} />
     </Route>
   </Route>
 );

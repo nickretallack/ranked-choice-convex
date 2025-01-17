@@ -1,6 +1,6 @@
 // import { Person, Poll } from "@prisma/client";
-import { NavLink } from "react-router";
 import { Doc } from "@convex/_generated/dataModel";
+import { NavLink } from "react-router";
 
 export default function PollNav({
   poll,
@@ -13,14 +13,14 @@ export default function PollNav({
   console.log("poll.creatorId", poll.creatorId);
   return (
     <nav className="subnav">
-      <NavLink to={`/telegram/polls/${poll._id}/vote`} end>
+      <NavLink to={`/telegram/poll/${poll._id}/vote`} end>
         Your Ranking
       </NavLink>
-      <NavLink to={`/telegram/polls/${poll._id}/results`} end>
+      <NavLink to={`/telegram/poll/${poll._id}/results`} end>
         Results
       </NavLink>
       {personId === poll.creatorId && (
-        <NavLink to={`/telegram/polls/${poll._id}/settings`} end>
+        <NavLink to={`/telegram/poll/${poll._id}/settings`} end>
           Settings
         </NavLink>
       )}
