@@ -26,6 +26,7 @@ import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
 import type * as userHelpers from "../userHelpers.js";
 import type * as util_normalizeWhitespace from "../util/normalizeWhitespace.js";
+import type * as util_recordIncrement from "../util/recordIncrement.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -49,6 +50,7 @@ declare const fullApi: ApiFromModules<{
   "telegram/webhook": typeof telegram_webhook;
   userHelpers: typeof userHelpers;
   "util/normalizeWhitespace": typeof util_normalizeWhitespace;
+  "util/recordIncrement": typeof util_recordIncrement;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

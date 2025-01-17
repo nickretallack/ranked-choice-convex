@@ -40,9 +40,9 @@ export function ResultsPage({
 }) {
   const candidateMap = indexByUniqueIdentifier(candidates);
 
-  const candidateIds = results.eliminations
-    .flatMap((elimination) => Array.from(elimination.candidates.keys()))
-    .reverse();
+  const candidateIds = results.eliminations.flatMap((elimination) =>
+    Object.keys(elimination.candidates).reverse(),
+  );
 
   const rounds = results.roundsByCandidate
     .get(candidateIds[0])!

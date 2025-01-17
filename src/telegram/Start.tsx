@@ -1,9 +1,9 @@
-import { useCallback, useEffect, useState } from "react";
-import { useAction } from "convex/react";
+import { useClerk, useSignIn, useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import Telegram from "@twa-dev/sdk";
+import { useAction } from "convex/react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router";
-import { useClerk, useSignIn, useUser } from "@clerk/clerk-react";
 
 export default function Start() {
   const navigate = useNavigate();
@@ -54,7 +54,7 @@ export default function Start() {
     });
 
     if (signInAttempt.status === "complete") {
-      setActive({
+      await setActive({
         session: signInAttempt.createdSessionId,
       });
       return await nextStep();

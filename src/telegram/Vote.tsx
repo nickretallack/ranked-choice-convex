@@ -4,17 +4,17 @@ import {
   MultipleContainers,
 } from "@/components/dndkit/MultipleContainers";
 
-import classNames from "classnames";
-import { useCallback, useEffect, useRef, useState } from "react";
-import Telegram from "@twa-dev/sdk";
-import { useParams } from "react-router";
-import { api } from "@convex/_generated/api";
-import { useMutation, useQuery } from "convex/react";
-import { Doc, Id } from "@convex/_generated/dataModel";
-import { indexByUniqueIdentifier } from "@/util/indexByUniqueIdentifier";
-import PollPage from "@/components/PollPage";
 import PollNav from "@/components/PollNav";
+import PollPage from "@/components/PollPage";
+import { indexByUniqueIdentifier } from "@/util/indexByUniqueIdentifier";
 import { useUser } from "@clerk/clerk-react";
+import { api } from "@convex/_generated/api";
+import { Doc, Id } from "@convex/_generated/dataModel";
+import Telegram from "@twa-dev/sdk";
+import classNames from "classnames";
+import { useMutation, useQuery } from "convex/react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { useParams } from "react-router";
 
 export default function VotePageLoader() {
   const pollId = useParams().pollId! as Id<"poll">;
@@ -59,18 +59,18 @@ function VotePage({
     };
   });
 
-  const scrollToCandidate = useCallback((candidateId: Id<"candidate">) => {
-    const element = document.querySelector(
-      `[data-candidate-id="${candidateId}"]`,
-    );
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-      element.classList.add("highlight-candidate");
-      setTimeout(() => {
-        element.classList.remove("highlight-candidate");
-      }, 1500); // Remove class after animation completes
-    }
-  }, []);
+  // const scrollToCandidate = useCallback((candidateId: Id<"candidate">) => {
+  //   const element = document.querySelector(
+  //     `[data-candidate-id="${candidateId}"]`,
+  //   );
+  //   if (element) {
+  //     element.scrollIntoView({ behavior: "smooth" });
+  //     element.classList.add("highlight-candidate");
+  //     setTimeout(() => {
+  //       element.classList.remove("highlight-candidate");
+  //     }, 1500); // Remove class after animation completes
+  //   }
+  // }, []);
 
   // When new candidates are added, index them and add them to DNDKit's state
   const candidateMap = useRef(indexByUniqueIdentifier(candidates));
