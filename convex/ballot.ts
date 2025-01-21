@@ -10,11 +10,25 @@ export const save = mutation({
   handler: async (ctx, { pollId, ranking }) => {
     const userId = (await requireUser(ctx)).id;
     console.log("userId", userId);
-    return await ctx.db.insert("ballot", {
-      pollId,
-      userId,
-      ranking,
-    });
+
+    const ballot = await ctx.db
+      .query("ballot")
+      .withIndex("by_userId_pollId", (q) =>
+        q.eq("userId", userId).eq("pollId", pollId),
+      )
+      .unique();
+
+    if (ballot) {
+      await ctx.db.patch(ballot._id, {
+        ranking,
+      });
+    } else {
+      await ctx.db.insert("ballot", {
+        pollId,
+        userId,
+        ranking,
+      });
+    }
   },
 });
 

@@ -1,6 +1,7 @@
 import { v } from "convex/values";
 import { Id } from "./_generated/dataModel";
 import { query } from "./_generated/server";
+import recordIncrement from "./util/recordIncrement";
 
 export const get = query({
   args: { id: v.id("poll") },
@@ -31,24 +32,26 @@ export const getResults = query({
   },
 });
 
+type RoundsByCandidate = Record<Id<"candidate">, number[]>;
 export type PollResults = {
   eliminations: Elimination[];
-  roundsByCandidate: Map<Id<"candidate">, number[]>;
+  roundsByCandidate: RoundsByCandidate;
 };
 
 type Ranking = Id<"candidate">[];
 export type RankingsByCandidate = Map<Id<"candidate">, Ranking[]>;
 type RedistributedVotes = {
-  nextChoice: Map<Id<"candidate">, number>;
+  nextChoice: Record<Id<"candidate">, number>;
   ballotsExhausted: number;
 };
 type Losers = {
   score: number;
   candidateIds: Id<"candidate">[];
 };
+type CandidateRedistributedVotes = Record<Id<"candidate">, RedistributedVotes>;
 type Elimination = {
   votes: number;
-  candidates: Map<Id<"candidate">, RedistributedVotes>;
+  candidates: CandidateRedistributedVotes;
 };
 
 function makeRankingsByCandidate(rankings: Ranking[]) {
@@ -65,14 +68,14 @@ function makeRankingsByCandidate(rankings: Ranking[]) {
 
 function calculateResults(rankingsByCandidate: RankingsByCandidate) {
   const eliminations: Elimination[] = [];
-  const roundsByCandidate = new Map<Id<"candidate">, number[]>();
+  const roundsByCandidate: RoundsByCandidate = {};
 
   while (rankingsByCandidate.size) {
     // Record the current vote counts.
     for (const [candidateId, ballots] of rankingsByCandidate) {
-      const counts = roundsByCandidate.get(candidateId) || [];
+      const counts = roundsByCandidate[candidateId] || [];
       counts.push(ballots.length);
-      roundsByCandidate.set(candidateId, counts);
+      roundsByCandidate[candidateId] = counts;
     }
 
     // Find out who lost.  Includes ties.
@@ -82,10 +85,7 @@ function calculateResults(rankingsByCandidate: RankingsByCandidate) {
     // San Francisco RCV breaks ties randomly.
     // They're both random on the first round.
 
-    const candidateRedistributedVotes = new Map<
-      Id<"candidate">,
-      RedistributedVotes
-    >();
+    const candidateRedistributedVotes: CandidateRedistributedVotes = {};
     eliminations.push({
       votes: newLosers.score,
       candidates: candidateRedistributedVotes,
@@ -100,9 +100,9 @@ function calculateResults(rankingsByCandidate: RankingsByCandidate) {
     for (const [candidateId, ballots] of freeBallots) {
       const redistributedVotes = {
         ballotsExhausted: 0,
-        nextChoice: new Map(),
+        nextChoice: {},
       } as RedistributedVotes;
-      candidateRedistributedVotes.set(candidateId, redistributedVotes);
+      candidateRedistributedVotes[candidateId] = redistributedVotes;
 
       // Redistribute the ballots to candidates that haven't been eliminated.
       for (const ballot of ballots) {
@@ -143,15 +143,10 @@ function moveBallotToNextChoice(
     if (rankingsByCandidate.has(newCandidateId)) {
       // found someone else to vote for
       rankingsByCandidate.get(newCandidateId)!.push(ballot);
-      mapIncrement(redistributedVotes.nextChoice, newCandidateId);
+      recordIncrement(redistributedVotes.nextChoice, newCandidateId);
       return;
     }
   }
   // ballot exhausted
   redistributedVotes.ballotsExhausted += 1;
-}
-
-function mapIncrement<Key>(map: Map<Key, number>, key: Key) {
-  const value = map.get(key) || 0;
-  map.set(key, value + 1);
 }

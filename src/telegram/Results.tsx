@@ -40,13 +40,14 @@ export function ResultsPage({
 }) {
   const candidateMap = indexByUniqueIdentifier(candidates);
 
-  const candidateIds = results.eliminations.flatMap((elimination) =>
-    Object.keys(elimination.candidates).reverse(),
+  const candidateIds = results.eliminations.flatMap(
+    (elimination) =>
+      Object.keys(elimination.candidates).reverse() as Id<"candidate">[],
   );
 
-  const rounds = results.roundsByCandidate
-    .get(candidateIds[0])!
-    .map((_, i) => i + 1);
+  const rounds = results.roundsByCandidate[candidateIds[0]].map(
+    (_, i) => i + 1,
+  );
 
   return (
     <PollPage poll={poll}>
@@ -64,9 +65,9 @@ export function ResultsPage({
           <tbody>
             {candidateIds.map((candidateId) => {
               const candidate = candidateMap.get(candidateId)!;
-              const votesByRound = results.roundsByCandidate.get(
-                candidateId,
-              ) || [0];
+              const votesByRound = results.roundsByCandidate[candidateId] || [
+                0,
+              ];
               return (
                 <tr key={candidateId}>
                   <th>{candidate.name}</th>
