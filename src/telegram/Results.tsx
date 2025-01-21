@@ -4,7 +4,7 @@ import { indexByUniqueIdentifier } from "@/util/indexByUniqueIdentifier";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
-import type { PollResults } from "@convex/poll";
+import type { PollResults } from "@convex/tally";
 import { useQuery } from "convex/react";
 import { useParams } from "react-router";
 

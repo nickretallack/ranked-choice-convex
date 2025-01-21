@@ -18,6 +18,7 @@ import type * as candidate from "../candidate.js";
 import type * as http from "../http.js";
 import type * as messages from "../messages.js";
 import type * as poll from "../poll.js";
+import type * as tally from "../tally.js";
 import type * as telegram_actions from "../telegram/actions.js";
 import type * as telegram_bot from "../telegram/bot.js";
 import type * as telegram_openid from "../telegram/openid.js";
@@ -42,6 +43,7 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   messages: typeof messages;
   poll: typeof poll;
+  tally: typeof tally;
   "telegram/actions": typeof telegram_actions;
   "telegram/bot": typeof telegram_bot;
   "telegram/openid": typeof telegram_openid;
