@@ -1,9 +1,9 @@
-import { useEffect, useRef, useState } from "react";
-import Telegram from "@twa-dev/sdk";
-import { api } from "@convex/_generated/api";
-import { useMutation } from "convex/react";
 import CandidateListEditor from "@/components/CandidateListEditor";
+import { api } from "@convex/_generated/api";
 import { trimList } from "@convex/util/normalizeWhitespace";
+import Telegram from "@twa-dev/sdk";
+import { useMutation } from "convex/react";
+import { useEffect, useRef, useState } from "react";
 
 export default function NewPoll() {
   const formRef = useRef<HTMLFormElement>(null);

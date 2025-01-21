@@ -1,6 +1,6 @@
 import { httpRouter } from "convex/server";
+import { jwks, openidConfiguration } from "./telegram/openid";
 import { webhook } from "./telegram/webhook";
-import { openidConfiguration, jwks } from "./telegram/openid";
 
 const http = httpRouter();
 

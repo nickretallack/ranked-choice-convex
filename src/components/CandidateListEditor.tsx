@@ -48,7 +48,7 @@ export default function CandidatesListEditor({
                 event.stopPropagation();
                 focusIndexRef.current = index + 1;
                 setCandidates((candidates) =>
-                  candidates.toSpliced(index + 1, 0, "")
+                  candidates.toSpliced(index + 1, 0, ""),
                 );
                 setTimeout(() => {});
               }

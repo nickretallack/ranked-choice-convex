@@ -1,11 +1,11 @@
 "use node";
 
-import { validateWebAppData } from "@grammyjs/validator";
-import { v } from "convex/values";
-import { action } from "../_generated/server";
-import type { WebAppUser } from "@twa-dev/types";
-import { api } from "../_generated/api";
 import { createClerkClient } from "@clerk/backend";
+import { validateWebAppData } from "@grammyjs/validator";
+import type { WebAppUser } from "@twa-dev/types";
+import { v } from "convex/values";
+import { api } from "../_generated/api";
+import { action } from "../_generated/server";
 import { ClerkUser } from "../userHelpers";
 
 const clerkClient = createClerkClient({

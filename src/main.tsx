@@ -1,20 +1,13 @@
-import React, { useCallback, useMemo, useState } from "react";
-import ReactDOM from "react-dom/client";
+import { ClerkProvider, useAuth } from "@clerk/clerk-react";
+import { ConvexReactClient } from "convex/react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { ThemeProvider } from "next-themes";
-import {
-  ConvexProvider,
-  ConvexProviderWithAuth,
-  ConvexReactClient,
-  useAction,
-} from "convex/react";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { BrowserRouter, Route, Routes } from "react-router";
 import App from "./App.tsx";
 import "./main.css";
-import { BrowserRouter, Route, Routes } from "react-router";
 import TelegramRoutes from "./telegram/routes.tsx";
-import { api } from "@convex/_generated/api.js";
-import Telegram from "@twa-dev/sdk";
-import { ClerkProvider, useAuth } from "@clerk/clerk-react";
-import { ConvexProviderWithClerk } from "convex/react-clerk";
 const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 // function useMyAuth() {

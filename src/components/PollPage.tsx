@@ -1,5 +1,5 @@
-import { PropsWithChildren } from "react";
 import { Doc } from "@convex/_generated/dataModel";
+import { PropsWithChildren } from "react";
 
 type Props = PropsWithChildren<{ poll: Doc<"poll"> }>;
 
