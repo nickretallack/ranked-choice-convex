@@ -164,11 +164,13 @@ function VotePage({
             <div className="candidates">
               <h2>Candidates</h2>
               {containerViews["candidates"]}
-              <CandidateNomination
-                pollId={poll._id}
-                candidateMap={candidateMap}
-                scrollToCandidate={scrollToCandidate}
-              />
+              {poll.allowNominations && (
+                <CandidateNomination
+                  pollId={poll._id}
+                  candidateMap={candidateMap}
+                  scrollToCandidate={scrollToCandidate}
+                />
+              )}
             </div>
           </>
         )}

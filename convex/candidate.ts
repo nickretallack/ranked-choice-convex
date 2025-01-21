@@ -23,6 +23,8 @@ export const nominate = mutation({
 
     const poll = await ctx.db.get(pollId);
     if (!poll) throw new Error("Poll not found");
+    if (!poll.allowNominations)
+      throw new Error("Nominations are not allowed for this poll");
 
     const existingCandidate = await ctx.db
       .query("candidate")
