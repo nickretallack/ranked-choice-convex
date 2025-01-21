@@ -6,13 +6,12 @@ import { Doc, Id } from "@convex/_generated/dataModel";
 import type { PollResults } from "@convex/tally";
 import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
 import { useQuery } from "convex/react";
-import { useParams } from "react-router";
+import { useOutletContext } from "react-router";
 
 export default function ResultsPageLoader() {
-  const pollId = useParams().pollId! as Id<"poll">;
-  const poll = useQuery(api.poll.get, { id: pollId });
-  const candidates = useQuery(api.candidate.list, { pollId });
-  const results = useQuery(api.poll.getResults, { id: pollId });
+  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
+  const candidates = useQuery(api.candidate.list, { pollId: poll._id });
+  const results = useQuery(api.poll.getResults, { id: poll._id });
   const { user } = useUser();
 
   if (!(poll && candidates && results)) return <div>loading...</div>;

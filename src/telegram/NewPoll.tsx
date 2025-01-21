@@ -1,4 +1,6 @@
 import CandidateListEditor from "@/components/CandidateListEditor";
+import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
+import PollTitleField from "@/components/settings/PollTitleField";
 import { api } from "@convex/_generated/api";
 import { trimList } from "@convex/util/normalizeWhitespace";
 import Telegram from "@twa-dev/sdk";
@@ -34,31 +36,11 @@ export default function NewPoll() {
     <div>
       <h1>Create a Poll</h1>
       <form ref={formRef}>
-        <div className="form-control">
-          <label htmlFor="title">Title</label>
-          <input
-            name="title"
-            id="title"
-            // defaultValue={poll?.title}
-            required
-            // aria-invalid={errors?.title ? "true" : "false"}
-          />
-          {/* {errors?.title && <p className="error">{errors.title}</p>} */}
-        </div>
+        <PollTitleField />
 
         <h2>Candidates</h2>
 
-        <div className="control">
-          <label htmlFor="allowNominations">
-            <input
-              name="allowNominations"
-              type="checkbox"
-              id="allowNominations"
-              defaultChecked={false}
-            />
-            Allow voters to nominate new candidates.
-          </label>
-        </div>
+        <AllowNominationsCheckbox />
 
         <CandidateListEditor
           candidates={candidates}

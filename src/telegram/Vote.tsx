@@ -4,6 +4,7 @@ import {
   Items,
   MultipleContainers,
 } from "@/components/dndkit/MultipleContainers";
+import Loading from "@/components/Loading";
 
 import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
@@ -15,16 +16,15 @@ import Telegram from "@twa-dev/sdk";
 import classNames from "classnames";
 import { useMutation, useQuery } from "convex/react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router";
+import { useOutletContext } from "react-router";
 
 export default function VotePageLoader() {
-  const pollId = useParams().pollId! as Id<"poll">;
-  const poll = useQuery(api.poll.get, { id: pollId });
-  const candidates = useQuery(api.candidate.list, { pollId });
-  const ranking = useQuery(api.ballot.get, { pollId });
+  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
+  const candidates = useQuery(api.candidate.list, { pollId: poll._id });
+  const ranking = useQuery(api.ballot.get, { pollId: poll._id });
   const { user } = useUser();
 
-  if (!(poll && candidates && ranking)) return null;
+  if (candidates === undefined || ranking === undefined) return <Loading />;
 
   return (
     <VotePage

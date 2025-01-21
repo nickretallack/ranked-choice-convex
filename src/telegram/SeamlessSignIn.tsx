@@ -1,3 +1,4 @@
+import Loading from "@/components/Loading";
 import { useClerk, useSignIn, useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import Telegram from "@twa-dev/sdk";
@@ -72,13 +73,13 @@ export default function SeamlessSignIn() {
     seamlessSignIn().catch(console.error);
   }, [seamlessSignIn]);
 
-  if (error) {
-    return <div>{error}</div>;
-  }
-
   if (ready) {
     return <Outlet />;
   }
 
-  return <div>Just a moment...</div>;
+  if (error) {
+    return <div>{error}</div>;
+  }
+
+  return <Loading />;
 }

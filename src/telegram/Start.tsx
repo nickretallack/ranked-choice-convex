@@ -1,8 +1,9 @@
+import Loading from "@/components/Loading";
 import Telegram from "@twa-dev/sdk";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
-export default function Start() {
+export default function TelegramStart() {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -12,5 +13,5 @@ export default function Start() {
     });
   }, [navigate]);
 
-  return <div>Just a moment...</div>;
+  return <Loading />;
 }

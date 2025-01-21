@@ -1,11 +1,18 @@
 import { v } from "convex/values";
-import { query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { PollResults, tallyResults } from "./tally";
 
 export const get = query({
   args: { id: v.id("poll") },
   handler: async (ctx, { id }) => {
     return await ctx.db.get(id);
+  },
+});
+
+export const updateSettings = mutation({
+  args: { id: v.id("poll"), title: v.string(), allowNominations: v.boolean() },
+  handler: async (ctx, { id, title, allowNominations }) => {
+    return await ctx.db.patch(id, { title, allowNominations });
   },
 });
 
