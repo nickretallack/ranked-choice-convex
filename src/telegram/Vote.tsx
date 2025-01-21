@@ -60,6 +60,7 @@ function VotePage({
     };
   });
 
+  const yourNewNominationIds = useRef<Id<"candidate">[]>([]);
   const scrollToCandidate = useCallback((candidateId: Id<"candidate">) => {
     const element = document.querySelector(
       `[data-candidate-id="${candidateId}"]`,
@@ -70,6 +71,8 @@ function VotePage({
       setTimeout(() => {
         element.classList.remove("highlight-candidate");
       }, 1500); // Remove class after animation completes
+    } else {
+      yourNewNominationIds.current.push(candidateId);
     }
   }, []);
 
@@ -87,7 +90,16 @@ function VotePage({
       ...items,
       candidates: [...items.candidates, ...newCandidates],
     }));
-  }, [candidates]);
+
+    // Highlight your new nominations after the DOM has updated
+    requestAnimationFrame(() => {
+      const yourNewNominationIdsCopy = [...yourNewNominationIds.current];
+      yourNewNominationIds.current = [];
+      for (const candidateId of yourNewNominationIdsCopy) {
+        scrollToCandidate(candidateId);
+      }
+    });
+  }, [candidates, scrollToCandidate]);
 
   const submitVote = useCallback(() => {
     saveBallot({
