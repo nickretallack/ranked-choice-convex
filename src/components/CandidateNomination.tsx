@@ -1,16 +1,15 @@
+import { api } from "@convex/_generated/api";
+import { Doc, Id } from "@convex/_generated/dataModel";
+import { normalizeWhitespace } from "@convex/util/normalizeWhitespace";
 import { UniqueIdentifier } from "@dnd-kit/core";
-import { Candidate, Poll } from "@prisma/client";
-import { useFetcher } from "@remix-run/react";
-import Telegram from "app/telegram.client";
-import { useEffect, useRef } from "react";
-import { SimpleCandidate } from "~/models/candidate";
-import { action } from "~/routes/polls.$pollId.candidates.add";
-import { normalizeWhitespace } from "~/utils/normalizeWhitespace";
+import Telegram from "@twa-dev/sdk";
+import { useMutation } from "convex/react";
+import { useRef } from "react";
 
 type Props = {
-  pollId: Poll["id"];
-  candidateMap: React.MutableRefObject<Map<UniqueIdentifier, SimpleCandidate>>;
-  scrollToCandidate: (candidateId: Candidate["id"]) => void;
+  pollId: Id<"poll">;
+  candidateMap: React.MutableRefObject<Map<UniqueIdentifier, Doc<"candidate">>>;
+  scrollToCandidate: (candidateId: Id<"candidate">) => void;
 };
 
 export function CandidateNomination({
@@ -18,52 +17,46 @@ export function CandidateNomination({
   candidateMap,
   scrollToCandidate,
 }: Props) {
-  const fetcher = useFetcher<typeof action>();
   const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    const data = fetcher.data;
-    if (fetcher.state !== "idle") return;
-    if (!data) return;
-    if (data.error) {
-      if (Telegram) Telegram.showAlert(data.error);
-      else alert(data.error);
-    } else if (data.id) {
-      formRef.current?.reset();
-      scrollToCandidate(data.id);
-    }
-  }, [fetcher.state, fetcher.data, scrollToCandidate]);
+  const nominate = useMutation(api.candidate.nominate);
 
   return (
-    <fetcher.Form
+    <form
       ref={formRef}
       method="post"
       action={`/polls/${pollId}/candidates/add`}
       className="candidate-nomination"
       onSubmit={(event) => {
+        event.preventDefault();
         const name = normalizeWhitespace(
           new FormData(formRef.current!).get("name") as string,
         );
 
         if (!name) {
-          event.preventDefault();
           formRef.current?.reset();
           return;
         }
 
         const existingCandidateId = Array.from(
-          candidateMap.current!.values(),
-        ).find((candidate) => candidate.name === name)?.id;
+          candidateMap.current.values(),
+        ).find((candidate) => candidate.name === name)?._id;
 
         if (existingCandidateId) {
-          event.preventDefault();
           formRef.current?.reset();
           scrollToCandidate(existingCandidateId);
+        } else {
+          nominate({ pollId, name }).then(
+            (candidateId) => {
+              formRef.current?.reset();
+              scrollToCandidate(candidateId);
+            },
+            (error) => Telegram.showAlert(error),
+          );
         }
       }}
     >
       <input name="name" placeholder="new candidate..." required />
       <button className="telegram">nominate</button>
-    </fetcher.Form>
+    </form>
   );
 }

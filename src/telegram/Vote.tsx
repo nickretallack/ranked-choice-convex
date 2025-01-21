@@ -1,3 +1,4 @@
+import { CandidateNomination } from "@/components/CandidateNomination";
 import { Handle } from "@/components/dndkit/Item";
 import {
   Items,
@@ -59,18 +60,18 @@ function VotePage({
     };
   });
 
-  // const scrollToCandidate = useCallback((candidateId: Id<"candidate">) => {
-  //   const element = document.querySelector(
-  //     `[data-candidate-id="${candidateId}"]`,
-  //   );
-  //   if (element) {
-  //     element.scrollIntoView({ behavior: "smooth" });
-  //     element.classList.add("highlight-candidate");
-  //     setTimeout(() => {
-  //       element.classList.remove("highlight-candidate");
-  //     }, 1500); // Remove class after animation completes
-  //   }
-  // }, []);
+  const scrollToCandidate = useCallback((candidateId: Id<"candidate">) => {
+    const element = document.querySelector(
+      `[data-candidate-id="${candidateId}"]`,
+    );
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      element.classList.add("highlight-candidate");
+      setTimeout(() => {
+        element.classList.remove("highlight-candidate");
+      }, 1500); // Remove class after animation completes
+    }
+  }, []);
 
   // When new candidates are added, index them and add them to DNDKit's state
   const candidateMap = useRef(indexByUniqueIdentifier(candidates));
@@ -151,11 +152,11 @@ function VotePage({
             <div className="candidates">
               <h2>Candidates</h2>
               {containerViews["candidates"]}
-              {/* <CandidateNomination
-                pollId={poll.id}
+              <CandidateNomination
+                pollId={poll._id}
                 candidateMap={candidateMap}
                 scrollToCandidate={scrollToCandidate}
-              /> */}
+              />
             </div>
           </>
         )}
