@@ -6,10 +6,10 @@ import {
 
 import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
-import { indexByUniqueIdentifier } from "@/util/indexByUniqueIdentifier";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
+import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
 import Telegram from "@twa-dev/sdk";
 import classNames from "classnames";
 import { useMutation, useQuery } from "convex/react";

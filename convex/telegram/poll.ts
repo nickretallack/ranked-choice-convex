@@ -82,3 +82,25 @@ export const listForUser = query({
       .collect();
   },
 });
+
+export const listTelegramPollIds = query({
+  handler: async (ctx) => {
+    // efficient implementation of DISTINCT pollId
+    const pollIds = [];
+    let message = await ctx.db
+      .query("telegramInlineMessage")
+      .withIndex("by_pollId")
+      .order("desc")
+      .first();
+    while (message != null) {
+      const pollId = message.pollId;
+      pollIds.push(pollId);
+      message = await ctx.db
+        .query("telegramInlineMessage")
+        .withIndex("by_pollId", (q) => q.lt("pollId", pollId))
+        .order("desc")
+        .first();
+    }
+    return pollIds;
+  },
+});

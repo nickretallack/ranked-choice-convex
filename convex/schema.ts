@@ -50,7 +50,7 @@ export default defineSchema({
     pollId: v.id("poll"),
     inlineMessageId: v.string(),
     messageText: v.string(),
-  }),
+  }).index("by_pollId", ["pollId"]),
   telegramUser: defineTable({
     userId: v.id("user"),
     ...telegramUserDetailsFields,

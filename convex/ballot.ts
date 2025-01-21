@@ -1,6 +1,19 @@
 import { v } from "convex/values";
-import { mutation, query } from "./_generated/server";
+import { api } from "./_generated/api";
+import { action, mutation, query } from "./_generated/server";
 import { requireUser } from "./userHelpers";
+
+export const update = action({
+  args: {
+    pollId: v.id("poll"),
+    ranking: v.array(v.id("candidate")),
+  },
+  handler: async (ctx, { pollId, ranking }) => {
+    await ctx.runMutation(api.ballot.save, { pollId, ranking });
+
+    // const bot = createBot(ctx);
+  },
+});
 
 export const save = mutation({
   args: {
@@ -9,7 +22,9 @@ export const save = mutation({
   },
   handler: async (ctx, { pollId, ranking }) => {
     const userId = (await requireUser(ctx)).id;
-    console.log("userId", userId);
+
+    const poll = await ctx.db.get(pollId);
+    if (!poll) throw new Error("Poll not found");
 
     const ballot = await ctx.db
       .query("ballot")
@@ -27,6 +42,17 @@ export const save = mutation({
         pollId,
         userId,
         ranking,
+      });
+    }
+
+    // check if the poll has telegramInlineMessages
+    const inlineMessages = await ctx.db
+      .query("telegramInlineMessage")
+      .withIndex("by_pollId", (q) => q.eq("pollId", pollId))
+      .collect();
+    if (inlineMessages.length > 0) {
+      await ctx.scheduler.runAfter(0, api.telegram.inlineMessages.pollChanged, {
+        pollId,
       });
     }
   },

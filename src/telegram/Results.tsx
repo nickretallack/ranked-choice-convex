@@ -1,10 +1,10 @@
 import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
-import { indexByUniqueIdentifier } from "@/util/indexByUniqueIdentifier";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import type { PollResults } from "@convex/tally";
+import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
 import { useQuery } from "convex/react";
 import { useParams } from "react-router";
 
@@ -40,10 +40,11 @@ export function ResultsPage({
 }) {
   const candidateMap = indexByUniqueIdentifier(candidates);
 
-  const candidateIds = results.eliminations.flatMap(
-    (elimination) =>
-      Object.keys(elimination.candidates).reverse() as Id<"candidate">[],
-  );
+  const candidateIds = results.eliminations
+    .flatMap(
+      (elimination) => Object.keys(elimination.candidates) as Id<"candidate">[],
+    )
+    .reverse();
 
   const rounds = results.roundsByCandidate[candidateIds[0]].map(
     (_, i) => i + 1,

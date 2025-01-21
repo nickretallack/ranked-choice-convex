@@ -1,5 +1,5 @@
-import { Doc } from "@convex/_generated/dataModel";
 import { UniqueIdentifier } from "@dnd-kit/core";
+import { Doc } from "../_generated/dataModel";
 
 export function indexByUniqueIdentifier(items: Doc<"candidate">[]) {
   const result = new Map<UniqueIdentifier, Doc<"candidate">>();
