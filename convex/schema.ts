@@ -24,6 +24,7 @@ export default defineSchema({
     creatorId: v.optional(v.id("user")),
     allowNominations: v.boolean(),
     closed: v.boolean(),
+    liveResults: v.boolean(),
   }).index("by_creatorId", ["creatorId"]),
   candidate: defineTable({
     name: v.string(),

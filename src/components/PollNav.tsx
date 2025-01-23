@@ -4,22 +4,23 @@ import { NavLink } from "react-router";
 
 export default function PollNav({
   poll,
-  personId,
+  userId,
 }: {
   poll: Doc<"poll">;
-  personId: string | null | undefined;
+  userId: string | null | undefined;
 }) {
-  console.log("personId", personId);
-  console.log("poll.creatorId", poll.creatorId);
+  const isYourPoll = userId === poll.creatorId;
   return (
     <nav className="subnav">
       <NavLink to={`/telegram/poll/${poll._id}/vote`} end>
         Your Ranking
       </NavLink>
-      <NavLink to={`/telegram/poll/${poll._id}/results`} end>
-        Results
-      </NavLink>
-      {personId === poll.creatorId && (
+      {(poll.liveResults || isYourPoll) && (
+        <NavLink to={`/telegram/poll/${poll._id}/results`} end>
+          Results
+        </NavLink>
+      )}
+      {isYourPoll && (
         <NavLink to={`/telegram/poll/${poll._id}/settings`} end>
           Settings
         </NavLink>

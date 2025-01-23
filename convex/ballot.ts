@@ -34,15 +34,21 @@ export const save = mutation({
       });
     }
 
-    // check if the poll has telegramInlineMessages
-    const inlineMessages = await ctx.db
-      .query("telegramInlineMessage")
-      .withIndex("by_pollId", (q) => q.eq("pollId", pollId))
-      .collect();
-    if (inlineMessages.length > 0) {
-      await ctx.scheduler.runAfter(0, api.telegram.inlineMessages.pollChanged, {
-        pollId,
-      });
+    // Report live results in Telegram if enabled
+    if (poll.liveResults) {
+      const inlineMessages = await ctx.db
+        .query("telegramInlineMessage")
+        .withIndex("by_pollId", (q) => q.eq("pollId", pollId))
+        .collect();
+      if (inlineMessages.length > 0) {
+        await ctx.scheduler.runAfter(
+          0,
+          api.telegram.inlineMessages.pollChanged,
+          {
+            pollId,
+          },
+        );
+      }
     }
   },
 });

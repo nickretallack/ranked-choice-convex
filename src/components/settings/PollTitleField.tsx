@@ -1,4 +1,4 @@
-export default function PollTitleField({ value }: { value: string }) {
+export default function PollTitleField({ value = "" }: { value?: string }) {
   return (
     <div className="form-control">
       <label htmlFor="title">Title</label>

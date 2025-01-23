@@ -1,7 +1,7 @@
 export default function AllowNominationsCheckbox({
-  value,
+  value = false,
 }: {
-  value: boolean;
+  value?: boolean;
 }) {
   return (
     <div className="control">

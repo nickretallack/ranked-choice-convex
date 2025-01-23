@@ -1,5 +1,6 @@
 import { GenericMutationCtx } from "convex/server";
 import { v } from "convex/values";
+import { api } from "./_generated/api";
 import { DataModel, Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { PollResults, tallyResults } from "./tally";
@@ -13,10 +14,15 @@ export const get = query({
 });
 
 export const updateSettings = mutation({
-  args: { id: v.id("poll"), title: v.string(), allowNominations: v.boolean() },
-  handler: async (ctx, { id, title, allowNominations }) => {
+  args: {
+    id: v.id("poll"),
+    title: v.string(),
+    allowNominations: v.boolean(),
+    liveResults: v.boolean(),
+  },
+  handler: async (ctx, { id, title, allowNominations, liveResults }) => {
     await requirePollOwner(ctx, id);
-    return await ctx.db.patch(id, { title, allowNominations });
+    return await ctx.db.patch(id, { title, allowNominations, liveResults });
   },
 });
 
@@ -40,8 +46,14 @@ export const getResults = query({
 export const close = mutation({
   args: { id: v.id("poll") },
   handler: async (ctx, { id }) => {
-    await requirePollOwner(ctx, id);
-    return await ctx.db.patch(id, { closed: true });
+    const { poll } = await requirePollOwner(ctx, id);
+    await ctx.db.patch(id, { closed: true });
+
+    if (!poll.liveResults) {
+      await ctx.scheduler.runAfter(0, api.telegram.inlineMessages.pollChanged, {
+        pollId: id,
+      });
+    }
   },
 });
 
@@ -57,10 +69,11 @@ async function requirePollOwner(
   ctx: GenericMutationCtx<DataModel>,
   id: Id<"poll">,
 ) {
-  const userId = (await requireUser(ctx)).id;
+  const user = await requireUser(ctx);
 
   const poll = await ctx.db.get(id);
   if (!poll) throw new Error("Poll not found");
-  if (poll.creatorId !== userId)
+  if (poll.creatorId !== user.id)
     throw new Error("You are not the owner of this poll.");
+  return { poll, user };
 }

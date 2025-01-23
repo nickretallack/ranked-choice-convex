@@ -7,11 +7,16 @@ export const create = mutation({
     title: v.string(),
     candidates: v.array(v.string()),
     allowNominations: v.boolean(),
+    liveResults: v.boolean(),
   },
-  handler: async (ctx, { title, candidates, allowNominations }) => {
+  handler: async (
+    ctx,
+    { title, candidates, allowNominations, liveResults },
+  ) => {
     const pollId = await ctx.db.insert("poll", {
       title,
       allowNominations,
+      liveResults,
       closed: false,
     });
     await Promise.all(

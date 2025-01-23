@@ -1,5 +1,6 @@
 import CandidateListEditor from "@/components/CandidateListEditor";
 import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
+import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
 import { api } from "@convex/_generated/api";
 import { trimList } from "@convex/util/normalizeWhitespace";
@@ -18,10 +19,17 @@ export default function NewPoll() {
       const form = formRef.current!;
       const formData = new FormData(form);
       const title = formData.get("title") as string;
-      const candidates = trimList(formData.getAll("candidate") as string[]);
       const allowNominations = formData.get("allowNominations") === "on";
+      const liveResults = formData.get("liveResults") === "on";
 
-      const id = await createPoll({ title, candidates, allowNominations });
+      const candidates = trimList(formData.getAll("candidate") as string[]);
+
+      const id = await createPoll({
+        title,
+        candidates,
+        allowNominations,
+        liveResults,
+      });
       Telegram?.switchInlineQuery(id);
     }) as () => void;
 
@@ -37,6 +45,7 @@ export default function NewPoll() {
       <h1>Create a Poll</h1>
       <form ref={formRef}>
         <PollTitleField />
+        <LiveResultsCheckbox />
 
         <h2>Candidates</h2>
 

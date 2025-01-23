@@ -2,6 +2,7 @@ import Loading from "@/components/Loading";
 import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
 import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
+import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
@@ -40,8 +41,13 @@ export function SettingsPage({
 
       const title = formData.get("title") as string;
       const allowNominations = formData.get("allowNominations") === "on";
-
-      await updateSettings({ id: poll._id, title, allowNominations });
+      const liveResults = formData.get("liveResults") === "on";
+      await updateSettings({
+        id: poll._id,
+        title,
+        allowNominations,
+        liveResults,
+      });
     }) as () => void;
 
     Telegram.MainButton.show().setText("Save Changes").onClick(saveHandler);
@@ -54,10 +60,11 @@ export function SettingsPage({
   return (
     <PollPage poll={poll}>
       <div className="main-section">
-        <PollNav poll={poll} personId={user?.externalId} />
+        <PollNav poll={poll} userId={user?.externalId} />
         <form ref={formRef} className="settings-form">
           <PollTitleField value={poll.title} />
           <AllowNominationsCheckbox value={poll.allowNominations} />
+          <LiveResultsCheckbox value={poll.liveResults} />
         </form>
       </div>
     </PollPage>

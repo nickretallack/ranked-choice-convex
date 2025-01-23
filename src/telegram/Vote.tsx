@@ -161,7 +161,7 @@ function VotePage({
         {({ containerViews }) => (
           <>
             <div className="main-section">
-              <PollNav poll={poll} personId={user?.externalId} />
+              <PollNav poll={poll} userId={user?.externalId} />
               {containerViews["ranking"]}
             </div>
             <div className="candidates">
