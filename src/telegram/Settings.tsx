@@ -7,9 +7,9 @@ import PollTitleField from "@/components/settings/PollTitleField";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc } from "@convex/_generated/dataModel";
-import Telegram from "@twa-dev/sdk";
+import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation } from "convex/react";
-import { useEffect, useRef } from "react";
+import { useCallback, useRef } from "react";
 import { useNavigate, useOutletContext } from "react-router";
 
 export default function SettingsPageLoader() {
@@ -33,9 +33,8 @@ export function SettingsPage({
 }) {
   const formRef = useRef<HTMLFormElement>(null);
   const updateSettings = useMutation(api.poll.updateSettings);
-
-  useEffect(() => {
-    const saveHandler = (async () => {
+  const saveHandler = useCallback(() => {
+    void (async () => {
       const form = formRef.current!;
       const formData = new FormData(form);
 
@@ -48,13 +47,7 @@ export function SettingsPage({
         allowNominations,
         liveResults,
       });
-    }) as () => void;
-
-    Telegram.MainButton.show().setText("Save Changes").onClick(saveHandler);
-
-    return () => {
-      Telegram.MainButton.offClick(saveHandler).hide();
-    };
+    })();
   }, [updateSettings, poll._id]);
 
   return (
@@ -67,6 +60,9 @@ export function SettingsPage({
           <LiveResultsCheckbox value={poll.liveResults} />
         </form>
       </div>
+      <BottomBar>
+        <MainButton text="Save Changes" onClick={saveHandler} />
+      </BottomBar>
     </PollPage>
   );
 }

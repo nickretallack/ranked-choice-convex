@@ -5,7 +5,7 @@ import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
-import Telegram from "@twa-dev/sdk";
+import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router";
@@ -17,60 +17,43 @@ export default function ResultsPage() {
   const navigate = useNavigate();
   const closePoll = useMutation(api.poll.close);
   const reopenPoll = useMutation(api.poll.reopen);
+  const resultsAvailable = poll.liveResults || poll.closed;
+  const shouldNavigateAway = !isYourPoll && !resultsAvailable;
 
+  // If you're not the creator and the results aren't available yet, navigate to the vote page
   useEffect(() => {
-    if (!isYourPoll) {
-      if (!poll.liveResults) {
-        void navigate(`/poll/${poll._id}/vote`);
-      }
-      return;
+    if (shouldNavigateAway) {
+      void navigate(`/poll/${poll._id}/vote`);
     }
-
-    if (poll.closed) {
-      const reopenHandler = (async () => {
-        await reopenPoll({ id: poll._id });
-      }) as () => void;
-      Telegram.MainButton.show().setText("Reopen Poll").onClick(reopenHandler);
-      return () => {
-        Telegram.MainButton.offClick(reopenHandler).hide();
-      };
-    } else {
-      const closeHandler = (async () => {
-        await closePoll({ id: poll._id });
-      }) as () => void;
-      Telegram.MainButton.show().setText("Close Poll").onClick(closeHandler);
-      return () => {
-        Telegram.MainButton.offClick(closeHandler).hide();
-      };
-    }
-  }, [
-    poll.closed,
-    poll.liveResults,
-    poll._id,
-    isYourPoll,
-    closePoll,
-    reopenPoll,
-    navigate,
-  ]);
-
-  let content = <Loading />;
-
-  if (!poll.liveResults && !poll.closed) {
-    console.log("poll.liveResults", poll.liveResults);
-    console.log("poll.closed", poll.closed);
-    if (isYourPoll) {
-      content = <div>Close the poll to view the results.</div>;
-    }
-  } else {
-    content = <Results />;
-  }
+  }, [shouldNavigateAway, poll._id, navigate]);
 
   return (
     <PollPage poll={poll}>
       <div className="main-section">
         <PollNav poll={poll} userId={user?.externalId} />
-        {content}
+        {resultsAvailable ? (
+          <Results />
+        ) : isYourPoll ? (
+          <div>Close the poll to view the results.</div>
+        ) : (
+          <Loading />
+        )}
       </div>
+
+      <BottomBar>
+        {isYourPoll &&
+          (poll.closed ? (
+            <MainButton
+              text="Reopen Poll"
+              onClick={() => void reopenPoll({ id: poll._id })}
+            />
+          ) : (
+            <MainButton
+              text="Close Poll"
+              onClick={() => void closePoll({ id: poll._id })}
+            />
+          ))}
+      </BottomBar>
     </PollPage>
   );
 }

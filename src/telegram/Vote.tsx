@@ -12,7 +12,7 @@ import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
-import Telegram from "@twa-dev/sdk";
+import { BottomBar, MainButton, SecondaryButton } from "@twa-dev/sdk/react";
 import classNames from "classnames";
 import { useMutation, useQuery } from "convex/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -110,23 +110,6 @@ function VotePage({
     });
   }, [items.ranking, poll._id, saveBallot]);
 
-  useEffect(() => {
-    if (poll.closed) {
-      Telegram.MainButton.hide();
-      Telegram.SecondaryButton.show().setText("This poll is closed").disable();
-      Telegram.SecondaryButton.textColor = "#808080";
-      return () => {
-        Telegram.SecondaryButton.hide();
-      };
-    } else {
-      Telegram.SecondaryButton.hide();
-      Telegram.MainButton.show().setText("Submit Vote").onClick(submitVote);
-      return () => {
-        Telegram.MainButton.offClick(submitVote).hide();
-      };
-    }
-  }, [submitVote, poll.closed]);
-
   return (
     <PollPage poll={poll}>
       <MultipleContainers
@@ -178,6 +161,17 @@ function VotePage({
           </>
         )}
       </MultipleContainers>
+      <BottomBar>
+        {poll.closed ? (
+          <SecondaryButton
+            text="This poll is closed"
+            textColor="#808080"
+            disabled
+          />
+        ) : (
+          <MainButton text="Submit Vote" onClick={submitVote} />
+        )}
+      </BottomBar>
     </PollPage>
   );
 }

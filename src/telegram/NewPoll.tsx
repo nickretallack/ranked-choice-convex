@@ -5,17 +5,16 @@ import PollTitleField from "@/components/settings/PollTitleField";
 import { api } from "@convex/_generated/api";
 import { trimList } from "@convex/util/normalizeWhitespace";
 import Telegram from "@twa-dev/sdk";
+import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation } from "convex/react";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 export default function NewPoll() {
   const formRef = useRef<HTMLFormElement>(null);
   const [candidates, setCandidates] = useState([""]);
-  // const [errors, setErrors] = useState<Record<string, string>>({});
   const createPoll = useMutation(api.telegram.poll.create);
-
-  useEffect(() => {
-    const handler = (async () => {
+  const submitHandler = useCallback(() => {
+    void (async () => {
       const form = formRef.current!;
       const formData = new FormData(form);
       const title = formData.get("title") as string;
@@ -30,14 +29,8 @@ export default function NewPoll() {
         allowNominations,
         liveResults,
       });
-      Telegram?.switchInlineQuery(id);
-    }) as () => void;
-
-    Telegram.MainButton.show().setText("Create This Poll").onClick(handler);
-
-    return () => {
-      Telegram.MainButton.offClick(handler);
-    };
+      Telegram.switchInlineQuery(id);
+    })();
   }, [createPoll]);
 
   return (
@@ -56,6 +49,9 @@ export default function NewPoll() {
           setCandidates={setCandidates}
         />
       </form>
+      <BottomBar>
+        <MainButton text="Create This Poll" onClick={submitHandler} />
+      </BottomBar>
     </div>
   );
 }
