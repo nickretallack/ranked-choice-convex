@@ -1,18 +1,19 @@
 import { Route } from "react-router";
-import TelegramLayout from "./Layout";
+import Layout from "./Layout";
 import NewPoll from "./NewPoll";
 import Results from "./Results";
 import SeamlessSignIn from "./SeamlessSignIn";
-import Start from "./Start";
-import Vote from "./Vote";
 import Settings from "./Settings";
+import Start from "./Start";
+import Theme from "./Theme";
+import Vote from "./Vote";
 
 const TelegramRoutes = (
-  <Route path="telegram">
+  <Route path="telegram" element={<Theme />}>
     <Route path="polls/new" element={<NewPoll />} />
     <Route element={<SeamlessSignIn />}>
       <Route path="start" element={<Start />} />
-      <Route path="poll/:pollId" element={<TelegramLayout />}>
+      <Route path="poll/:pollId" element={<Layout />}>
         <Route path="vote" element={<Vote />} />
         <Route path="results" element={<Results />} />
         <Route path="settings" element={<Settings />} />

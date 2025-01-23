@@ -56,7 +56,7 @@ export function CandidateNomination({
       }}
     >
       <input name="name" placeholder="new candidate..." required />
-      <button className="telegram">nominate</button>
+      <button className="small button">nominate</button>
     </form>
   );
 }

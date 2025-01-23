@@ -56,6 +56,7 @@ export default function CandidatesListEditor({
           />
           {candidates.length >= 2 && (
             <button
+              className="icon-button"
               type="button"
               onClick={(event) => {
                 console.log(index);
