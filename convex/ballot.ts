@@ -1,19 +1,7 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
-import { action, mutation, query } from "./_generated/server";
+import { mutation, query } from "./_generated/server";
 import { requireUser } from "./userHelpers";
-
-export const update = action({
-  args: {
-    pollId: v.id("poll"),
-    ranking: v.array(v.id("candidate")),
-  },
-  handler: async (ctx, { pollId, ranking }) => {
-    await ctx.runMutation(api.ballot.save, { pollId, ranking });
-
-    // const bot = createBot(ctx);
-  },
-});
 
 export const save = mutation({
   args: {
@@ -25,6 +13,7 @@ export const save = mutation({
 
     const poll = await ctx.db.get(pollId);
     if (!poll) throw new Error("Poll not found");
+    if (poll.closed) throw new Error("Poll is closed");
 
     const ballot = await ctx.db
       .query("ballot")

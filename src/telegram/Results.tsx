@@ -5,7 +5,9 @@ import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import type { PollResults } from "@convex/tally";
 import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
-import { useQuery } from "convex/react";
+import Telegram from "@twa-dev/sdk";
+import { useMutation, useQuery } from "convex/react";
+import { useEffect } from "react";
 import { useOutletContext } from "react-router";
 
 export default function ResultsPageLoader() {
@@ -22,6 +24,7 @@ export default function ResultsPageLoader() {
       candidates={candidates}
       results={results}
       user={user}
+      isYourPoll={user?.externalId === poll.creatorId}
     />
   );
 }
@@ -31,11 +34,13 @@ export function ResultsPage({
   candidates,
   results,
   user,
+  isYourPoll,
 }: {
   poll: Doc<"poll">;
   candidates: Doc<"candidate">[];
   results: PollResults;
   user: ReturnType<typeof useUser>["user"];
+  isYourPoll: boolean;
 }) {
   const candidateMap = indexByUniqueIdentifier(candidates);
 
@@ -48,6 +53,31 @@ export function ResultsPage({
   const rounds = results.roundsByCandidate[candidateIds[0]].map(
     (_, i) => i + 1,
   );
+
+  const closePoll = useMutation(api.poll.close);
+  const reopenPoll = useMutation(api.poll.reopen);
+
+  useEffect(() => {
+    if (!isYourPoll) return;
+
+    if (poll.closed) {
+      const reopenHandler = (async () => {
+        await reopenPoll({ id: poll._id });
+      }) as () => void;
+      Telegram.MainButton.show().setText("Reopen Poll").onClick(reopenHandler);
+      return () => {
+        Telegram.MainButton.offClick(reopenHandler).hide();
+      };
+    } else {
+      const closeHandler = (async () => {
+        await closePoll({ id: poll._id });
+      }) as () => void;
+      Telegram.MainButton.show().setText("Close Poll").onClick(closeHandler);
+      return () => {
+        Telegram.MainButton.offClick(closeHandler).hide();
+      };
+    }
+  }, [poll.closed, closePoll, reopenPoll, poll._id, isYourPoll]);
 
   return (
     <PollPage poll={poll}>

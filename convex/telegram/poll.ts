@@ -9,7 +9,11 @@ export const create = mutation({
     allowNominations: v.boolean(),
   },
   handler: async (ctx, { title, candidates, allowNominations }) => {
-    const pollId = await ctx.db.insert("poll", { title, allowNominations });
+    const pollId = await ctx.db.insert("poll", {
+      title,
+      allowNominations,
+      closed: false,
+    });
     await Promise.all(
       trimList(candidates).map((candidate) =>
         ctx.db.insert("candidate", {

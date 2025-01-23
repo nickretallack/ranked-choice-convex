@@ -111,18 +111,21 @@ function VotePage({
   }, [items.ranking, poll._id, saveBallot]);
 
   useEffect(() => {
-    Telegram?.MainButton.show().setText("Submit Vote");
-    return () => {
-      Telegram?.MainButton.hide();
-    };
-  }, []);
-
-  useEffect(() => {
-    Telegram?.MainButton.onClick(submitVote);
-    return () => {
-      Telegram?.MainButton.offClick(submitVote);
-    };
-  }, [submitVote]);
+    if (poll.closed) {
+      Telegram.MainButton.hide();
+      Telegram.SecondaryButton.show().setText("This poll is closed").disable();
+      Telegram.SecondaryButton.textColor = "#808080";
+      return () => {
+        Telegram.SecondaryButton.hide();
+      };
+    } else {
+      Telegram.SecondaryButton.hide();
+      Telegram.MainButton.show().setText("Submit Vote").onClick(submitVote);
+      return () => {
+        Telegram.MainButton.offClick(submitVote).hide();
+      };
+    }
+  }, [submitVote, poll.closed]);
 
   return (
     <PollPage poll={poll}>

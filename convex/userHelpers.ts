@@ -20,7 +20,7 @@ export type ClerkUser = {
 export async function requireUser(ctx: { auth: Auth }) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
-    throw new Error("Unauthorized");
+    throw new Error("Who are you?");
   }
   return {
     id: identity.externalId as Id<"user">,

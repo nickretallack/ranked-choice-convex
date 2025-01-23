@@ -34,7 +34,7 @@ export function SettingsPage({
   const updateSettings = useMutation(api.poll.updateSettings);
 
   useEffect(() => {
-    const handler = (async () => {
+    const saveHandler = (async () => {
       const form = formRef.current!;
       const formData = new FormData(form);
 
@@ -44,10 +44,10 @@ export function SettingsPage({
       await updateSettings({ id: poll._id, title, allowNominations });
     }) as () => void;
 
-    Telegram.MainButton.show().setText("Save Changes").onClick(handler);
+    Telegram.MainButton.show().setText("Save Changes").onClick(saveHandler);
 
     return () => {
-      Telegram.MainButton.offClick(handler).hide();
+      Telegram.MainButton.offClick(saveHandler).hide();
     };
   }, [updateSettings, poll._id]);
 
