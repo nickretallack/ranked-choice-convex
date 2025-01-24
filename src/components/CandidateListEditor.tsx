@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import "./candidateListEditor.css";
 
 type Props = {
   candidates: string[];
@@ -28,35 +29,38 @@ export default function CandidatesListEditor({
   }, [candidates]); // Now triggered when candidates array changes
 
   return (
-    <ul>
-      {candidates.map((candidate, index) => (
-        <li key={index}>
-          <input
-            ref={(el) => (inputRefs.current[index] = el)}
-            name="candidate"
-            value={candidate}
-            onChange={(event) => {
-              setCandidates((candidates) => {
-                const newCandidates = [...candidates];
-                newCandidates[index] = event.target.value;
-                return newCandidates;
-              });
-            }}
-            onKeyDown={(event) => {
-              if (event.key === "Enter") {
-                event.preventDefault();
-                event.stopPropagation();
-                focusIndexRef.current = index + 1;
-                setCandidates((candidates) =>
-                  candidates.toSpliced(index + 1, 0, ""),
-                );
-                setTimeout(() => {});
-              }
-            }}
-          />
-          {candidates.length >= 2 && (
+    <div className="candidates-editor">
+      <div className="section-header">Candidates</div>
+      <ul className="candidates-list">
+        {candidates.map((candidate, index) => (
+          <li key={index} className="candidate-item">
+            <input
+              placeholder="Someone..."
+              className="candidate-input"
+              ref={(el) => (inputRefs.current[index] = el)}
+              name="candidate"
+              value={candidate}
+              onChange={(event) => {
+                setCandidates((candidates) => {
+                  const newCandidates = [...candidates];
+                  newCandidates[index] = event.target.value;
+                  return newCandidates;
+                });
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  event.stopPropagation();
+                  focusIndexRef.current = index + 1;
+                  setCandidates((candidates) =>
+                    candidates.toSpliced(index + 1, 0, ""),
+                  );
+                  setTimeout(() => {});
+                }
+              }}
+            />
             <button
-              className="icon-button"
+              className="delete-button"
               type="button"
               onClick={(event) => {
                 console.log(index);
@@ -67,19 +71,21 @@ export default function CandidatesListEditor({
             >
               x
             </button>
-          )}
-        </li>
-      ))}
+          </li>
+        ))}
+      </ul>
+
       <button
         type="button"
+        className="add-button"
         onClick={(event) => {
           event.preventDefault();
           focusIndexRef.current = candidates.length;
           setCandidates((candidates) => [...candidates, ""]);
         }}
       >
-        +
+        + Nominate a Candidate
       </button>
-    </ul>
+    </div>
   );
 }

@@ -11,7 +11,7 @@ import { useCallback, useRef, useState } from "react";
 
 export default function NewPoll() {
   const formRef = useRef<HTMLFormElement>(null);
-  const [candidates, setCandidates] = useState([""]);
+  const [candidates, setCandidates] = useState(["", ""]);
   const createPoll = useMutation(api.telegram.poll.create);
   const submitHandler = useCallback(() => {
     void (async () => {
@@ -34,14 +34,11 @@ export default function NewPoll() {
   }, [createPoll]);
 
   return (
-    <div>
-      <h1>Create a Poll</h1>
+    <div className="container">
+      <h1 className="title">Create a Poll</h1>
       <form ref={formRef}>
         <PollTitleField />
         <LiveResultsCheckbox />
-
-        <h2>Candidates</h2>
-
         <AllowNominationsCheckbox />
 
         <CandidateListEditor

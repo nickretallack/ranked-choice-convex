@@ -4,6 +4,7 @@ import { Outlet } from "react-router";
 
 import "./css/button.css";
 import "./css/icon-button.css";
+import "./css/telegram.css";
 
 export default function TelegramTheme() {
   useEffect(() => {
