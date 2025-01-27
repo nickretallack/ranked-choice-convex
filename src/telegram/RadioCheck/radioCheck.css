@@ -1,0 +1,21 @@
+.radio-check {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.radio-check input[type="radio"] {
+  display: none;
+}
+
+.radio-check .check-mark {
+  color: var(--tg-theme-button-color);
+  font-size: 18px;
+  opacity: 0;
+  align-self: center;
+  justify-self: center;
+}
+
+.radio-check input[type="radio"]:checked ~ .check-mark {
+  opacity: 1;
+}

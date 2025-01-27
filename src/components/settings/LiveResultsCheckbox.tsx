@@ -1,4 +1,6 @@
-import "./settings.css";
+// import "./settings.css";
+
+import RadioCheck from "@/telegram/RadioCheck/RadioCheck";
 
 export default function LiveResultsCheckbox({
   value = true,
@@ -8,25 +10,22 @@ export default function LiveResultsCheckbox({
   return (
     <div>
       <div className="section-header">Show results</div>
-      <div className="settings-list">
-        <label className="settings-option">
-          <input
-            type="radio"
+      <div className="panel left">
+        <label>
+          <RadioCheck
             name="liveResults"
-            value="true"
-            defaultChecked={value}
+            value="on"
+            defaultChecked={value == true}
           />
-          <div className="check-mark">✓</div>
-          <div className="option-content">
-            <div className="option-title">Live</div>
-          </div>
+          <div>Live</div>
         </label>
-        <label className="settings-option">
-          <input type="radio" name="liveResults" value="false" />
-          <div className="check-mark">✓</div>
-          <div className="option-content">
-            <div className="option-title">When the poll is closed</div>
-          </div>
+        <label>
+          <RadioCheck
+            name="liveResults"
+            value="off"
+            defaultChecked={value == false}
+          />
+          <div>When the poll is closed</div>
         </label>
       </div>
     </div>

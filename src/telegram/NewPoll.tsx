@@ -35,8 +35,8 @@ export default function NewPoll() {
 
   return (
     <div className="container">
-      <h1 className="title">Create a Poll</h1>
       <form ref={formRef} className="form">
+        <h1>New Poll</h1>
         <PollTitleField />
         <LiveResultsCheckbox />
         <AllowNominationsCheckbox />

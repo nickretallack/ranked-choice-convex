@@ -1,5 +1,4 @@
 import { useEffect, useRef } from "react";
-import "./candidateListEditor.css";
 
 type Props = {
   candidates: string[];
@@ -31,12 +30,25 @@ export default function CandidatesListEditor({
   return (
     <div className="candidates-editor">
       <div className="section-header">Candidates</div>
-      <ul className="candidates-list">
+      <div className="panel left">
         {candidates.map((candidate, index) => (
-          <li key={index} className="candidate-item">
+          <div key={index}>
+            <button
+              className="delete-button"
+              type="button"
+              onClick={(event) => {
+                console.log(index);
+                event.preventDefault();
+                focusIndexRef.current = index + 1;
+                setCandidates((candidates) => candidates.toSpliced(index, 1));
+              }}
+            >
+              x
+            </button>
+
             <input
               placeholder="Someone..."
-              className="candidate-input"
+              className="text-input"
               ref={(el) => (inputRefs.current[index] = el)}
               name="candidate"
               value={candidate}
@@ -59,33 +71,22 @@ export default function CandidatesListEditor({
                 }
               }}
             />
-            <button
-              className="delete-button"
-              type="button"
-              onClick={(event) => {
-                console.log(index);
-                event.preventDefault();
-                focusIndexRef.current = index + 1;
-                setCandidates((candidates) => candidates.toSpliced(index, 1));
-              }}
-            >
-              x
-            </button>
-          </li>
+          </div>
         ))}
-      </ul>
 
-      <button
-        type="button"
-        className="add-button"
-        onClick={(event) => {
-          event.preventDefault();
-          focusIndexRef.current = candidates.length;
-          setCandidates((candidates) => [...candidates, ""]);
-        }}
-      >
-        + Nominate a Candidate
-      </button>
+        <button
+          type="button"
+          className="add-button"
+          onClick={(event) => {
+            event.preventDefault();
+            focusIndexRef.current = candidates.length;
+            setCandidates((candidates) => [...candidates, ""]);
+          }}
+        >
+          <div className="add-button-icon">+</div>
+          <div>Nominate a Candidate</div>
+        </button>
+      </div>
     </div>
   );
 }

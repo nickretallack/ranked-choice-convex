@@ -6,11 +6,14 @@ export default function AllowNominationsCheckbox({
   value?: boolean;
 }) {
   return (
-    <div className="panel">
-      <label className="row">
-        <span>Voters can nominate candidates</span>
-        <Toggle name="allowNominations" defaultChecked={value} />
-      </label>
+    <div>
+      <div className="section-header">Nominations</div>
+      <div className="panel right">
+        <div>
+          Voters can nominate candidates
+          <Toggle name="allowNominations" defaultChecked={value} />
+        </div>
+      </div>
     </div>
   );
 }
