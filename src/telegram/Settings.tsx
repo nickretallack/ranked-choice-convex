@@ -2,21 +2,25 @@ import Loading from "@/components/Loading";
 import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
 import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
-import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc } from "@convex/_generated/dataModel";
 import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation } from "convex/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
+import { PollContext } from "./Layout";
 
 export default function SettingsPageLoader() {
-  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
-  const { user } = useUser();
+  const { poll, isYourPoll } = useOutletContext<PollContext>();
   const navigate = useNavigate();
 
-  if (user?.externalId !== poll.creatorId) {
-    void navigate(`/polls/${poll._id}/vote`);
+  useEffect(() => {
+    if (!isYourPoll) {
+      void navigate(`/polls/${poll._id}/vote`);
+    }
+  }, [isYourPoll, poll._id, navigate]);
+
+  if (!isYourPoll) {
     return <Loading />;
   }
   return <SettingsPage poll={poll} />;

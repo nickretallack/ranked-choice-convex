@@ -1,5 +1,4 @@
 import Loading from "@/components/Loading";
-import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
@@ -7,11 +6,10 @@ import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router";
+import { PollContext } from "./Layout";
 
 export default function ResultsPage() {
-  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
-  const { user } = useUser();
-  const isYourPoll = user?.externalId === poll.creatorId;
+  const { poll, isYourPoll } = useOutletContext<PollContext>();
   const navigate = useNavigate();
   const closePoll = useMutation(api.poll.close);
   const reopenPoll = useMutation(api.poll.reopen);

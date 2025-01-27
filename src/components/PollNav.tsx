@@ -1,11 +1,14 @@
 // import { Person, Poll } from "@prisma/client";
-import { useUser } from "@clerk/clerk-react";
 import { Doc } from "@convex/_generated/dataModel";
 import { NavLink } from "react-router";
 
-export default function PollNav({ poll }: { poll: Doc<"poll"> }) {
-  const { user } = useUser();
-  const isYourPoll = user?.externalId === poll.creatorId;
+export default function PollNav({
+  poll,
+  isYourPoll,
+}: {
+  poll: Doc<"poll">;
+  isYourPoll: boolean;
+}) {
   return (
     <nav className="tabs">
       <NavLink to={`/telegram/poll/${poll._id}/vote`} end>

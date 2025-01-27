@@ -5,7 +5,6 @@ import {
   MultipleContainers,
 } from "@/components/dndkit/MultipleContainers";
 import Loading from "@/components/Loading";
-import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
@@ -15,37 +14,27 @@ import { useMutation, useQuery } from "convex/react";
 import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router";
+import { PollContext } from "./Layout";
 
 export default function VotePageLoader() {
-  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
+  const { poll } = useOutletContext<PollContext>();
   const candidates = useQuery(api.candidate.list, { pollId: poll._id });
   const ranking = useQuery(api.ballot.get, { pollId: poll._id });
-  const { user } = useUser();
 
   if (candidates === undefined || ranking === undefined) return <Loading />;
 
-  return (
-    <VotePage
-      poll={poll}
-      candidates={candidates}
-      ranking={ranking}
-      user={user}
-    />
-  );
+  return <VotePage poll={poll} candidates={candidates} ranking={ranking} />;
 }
 
 function VotePage({
   poll,
   candidates,
   ranking,
-  user,
 }: {
   poll: Doc<"poll">;
   candidates: Doc<"candidate">[];
   ranking: Id<"candidate">[];
-  user: ReturnType<typeof useUser>["user"];
 }) {
-  console.log("user", user);
   const saveBallot = useMutation(api.ballot.save);
 
   const [items, setItems] = useState<Items>(() => {
