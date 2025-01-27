@@ -13,14 +13,12 @@ body {
 }
 
 .poll-page {
-  height: 100%;
+  height: 100vh;
   overflow: hidden;
-  position: fixed;
   margin: auto;
   display: flex;
   flex-direction: column;
   width: 100%;
-  padding-bottom: 4px;
 }
 
 .poll-page .container {
@@ -53,7 +51,6 @@ h1 {
 }
 
 .ranking {
-  min-height: 110px;
   grid-template-rows: 1fr;
   flex-shrink: 1;
 }
@@ -75,6 +72,7 @@ h1 {
 .ranking-item {
   background: var(--tg-theme-secondary-bg-color);
   border-radius: 10px;
+  margin-right: 8px;
 }
 
 .subnav a {
