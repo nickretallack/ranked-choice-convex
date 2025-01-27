@@ -1,5 +1,4 @@
 import Loading from "@/components/Loading";
-import PollPage from "@/components/PollPage";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
@@ -27,16 +26,14 @@ export default function ResultsPage() {
   }, [shouldNavigateAway, poll._id, navigate]);
 
   return (
-    <PollPage poll={poll}>
-      <div className="container">
-        {resultsAvailable ? (
-          <Results />
-        ) : isYourPoll ? (
-          <div>Close the poll to view the results.</div>
-        ) : (
-          <Loading />
-        )}
-      </div>
+    <>
+      {resultsAvailable ? (
+        <Results />
+      ) : isYourPoll ? (
+        <div>Close the poll to view the results.</div>
+      ) : (
+        <Loading />
+      )}
 
       <BottomBar>
         {isYourPoll &&
@@ -52,7 +49,7 @@ export default function ResultsPage() {
             />
           ))}
       </BottomBar>
-    </PollPage>
+    </>
   );
 }
 

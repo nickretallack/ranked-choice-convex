@@ -1,10 +1,9 @@
 // import { Person, Poll } from "@prisma/client";
 import { useUser } from "@clerk/clerk-react";
 import { Doc } from "@convex/_generated/dataModel";
-import { NavLink, useOutletContext } from "react-router";
+import { NavLink } from "react-router";
 
-export default function PollNav() {
-  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
+export default function PollNav({ poll }: { poll: Doc<"poll"> }) {
   const { user } = useUser();
   const isYourPoll = user?.externalId === poll.creatorId;
   return (

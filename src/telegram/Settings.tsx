@@ -1,5 +1,4 @@
 import Loading from "@/components/Loading";
-import PollPage from "@/components/PollPage";
 import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
 import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
@@ -20,16 +19,10 @@ export default function SettingsPageLoader() {
     void navigate(`/polls/${poll._id}/vote`);
     return <Loading />;
   }
-  return <SettingsPage poll={poll} user={user} />;
+  return <SettingsPage poll={poll} />;
 }
 
-export function SettingsPage({
-  poll,
-  user,
-}: {
-  poll: Doc<"poll">;
-  user: ReturnType<typeof useUser>["user"];
-}) {
+export function SettingsPage({ poll }: { poll: Doc<"poll"> }) {
   const formRef = useRef<HTMLFormElement>(null);
   const updateSettings = useMutation(api.poll.updateSettings);
   const saveHandler = useCallback(() => {
@@ -50,17 +43,15 @@ export function SettingsPage({
   }, [updateSettings, poll._id]);
 
   return (
-    <PollPage poll={poll}>
-      <div className="container">
-        <form ref={formRef} className="form">
-          <PollTitleField value={poll.title} />
-          <LiveResultsCheckbox value={poll.liveResults} />
-          <AllowNominationsCheckbox value={poll.allowNominations} />
-        </form>
-      </div>
+    <>
+      <form ref={formRef} className="form">
+        <PollTitleField value={poll.title} />
+        <LiveResultsCheckbox value={poll.liveResults} />
+        <AllowNominationsCheckbox value={poll.allowNominations} />
+      </form>
       <BottomBar>
         <MainButton text="Save Changes" onClick={saveHandler} />
       </BottomBar>
-    </PollPage>
+    </>
   );
 }
