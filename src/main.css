@@ -111,3 +111,9 @@ h2 {
 .highlight-candidate {
   animation: highlightFade 1.5s ease-out;
 }
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
