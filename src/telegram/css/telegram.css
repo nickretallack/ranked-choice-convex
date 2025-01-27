@@ -206,17 +206,17 @@ button {
   padding-block: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #6b7280;
+  color: var(--tg-theme-hint-color);
   text-decoration: none;
   position: relative;
 }
 
 .tabs a:hover {
-  color: #374151;
+  color: color-mix(in srgb, var(--tg-theme-link-color) 60%, transparent);
 }
 
 .tabs a.active {
-  color: #2481cc;
+  color: var(--tg-theme-link-color);
 }
 
 .tabs a.active::after {
@@ -226,5 +226,5 @@ button {
   left: 0;
   right: 0;
   height: 2px;
-  background-color: #2481cc;
+  background-color: var(--tg-theme-link-color);
 }
