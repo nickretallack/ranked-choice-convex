@@ -5,7 +5,6 @@ import {
   MultipleContainers,
 } from "@/components/dndkit/MultipleContainers";
 import Loading from "@/components/Loading";
-
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
@@ -13,6 +12,7 @@ import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
 import { BottomBar, MainButton, SecondaryButton } from "@twa-dev/sdk/react";
 import classNames from "classnames";
 import { useMutation, useQuery } from "convex/react";
+import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router";
 
@@ -174,8 +174,18 @@ function VotePage({
             textColor="#808080"
             disabled
           />
+        ) : items.ranking.length > 0 ? (
+          isEqual(ranking, items.ranking) ? (
+            <MainButton text="Voted" disabled color="#808080" />
+          ) : ranking.length > 0 ? (
+            <MainButton text="Update Vote" onClick={submitVote} />
+          ) : (
+            <MainButton text="Vote" onClick={submitVote} />
+          )
+        ) : ranking.length > 0 ? (
+          <MainButton text="Withdraw Vote" onClick={submitVote} />
         ) : (
-          <MainButton text="Submit Vote" onClick={submitVote} />
+          <MainButton text="Vote" disabled color="#808080" />
         )}
       </BottomBar>
     </>
