@@ -54,10 +54,10 @@ export function SettingsPage({
     <PollPage poll={poll}>
       <div className="main-section">
         <PollNav poll={poll} userId={user?.externalId} />
-        <form ref={formRef} className="settings-form">
+        <form ref={formRef} className="form container">
           <PollTitleField value={poll.title} />
-          <AllowNominationsCheckbox value={poll.allowNominations} />
           <LiveResultsCheckbox value={poll.liveResults} />
+          <AllowNominationsCheckbox value={poll.allowNominations} />
         </form>
       </div>
       <BottomBar>

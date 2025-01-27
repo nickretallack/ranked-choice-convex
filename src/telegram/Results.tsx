@@ -65,6 +65,8 @@ export function Results() {
 
   if (!(poll && candidates && results)) return <div>loading...</div>;
 
+  if (!results.eliminations.length) return <div>No results yet</div>;
+
   const candidateMap = indexByUniqueIdentifier(candidates);
 
   const candidateIds = results.eliminations
