@@ -25,7 +25,7 @@ export function CandidateNomination({
       ref={formRef}
       method="post"
       action={`/polls/${pollId}/candidates/add`}
-      className="container"
+      className="candidate-nomination"
       onSubmit={(event) => {
         event.preventDefault();
         const name = normalizeWhitespace(

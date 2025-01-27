@@ -1,17 +1,14 @@
 // import { Person, Poll } from "@prisma/client";
+import { useUser } from "@clerk/clerk-react";
 import { Doc } from "@convex/_generated/dataModel";
-import { NavLink } from "react-router";
+import { NavLink, useOutletContext } from "react-router";
 
-export default function PollNav({
-  poll,
-  userId,
-}: {
-  poll: Doc<"poll">;
-  userId: string | null | undefined;
-}) {
-  const isYourPoll = userId === poll.creatorId;
+export default function PollNav() {
+  const { poll } = useOutletContext<{ poll: Doc<"poll"> }>();
+  const { user } = useUser();
+  const isYourPoll = user?.externalId === poll.creatorId;
   return (
-    <nav className="subnav">
+    <nav className="tabs">
       <NavLink to={`/telegram/poll/${poll._id}/vote`} end>
         Your Ranking
       </NavLink>

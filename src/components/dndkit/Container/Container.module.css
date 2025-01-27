@@ -1,4 +1,7 @@
 .Container {
+  background: var(--tg-theme-secondary-bg-color);
+  border-radius: 10px;
+
   display: flex;
   flex-direction: column;
   grid-auto-rows: max-content;
@@ -14,9 +17,9 @@
 
   overflow: auto;
 
-  &.hover {
+  /* &.hover {
     background-color: rgb(235, 235, 235, 0.2);
-  }
+  } */
 
   &.unstyled {
     overflow: visible;
@@ -26,6 +29,8 @@
 
   &:focus-visible {
     border-color: transparent;
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0), 0 0px 0px 2px #4c9ffe;
+    box-shadow:
+      0 0 0 2px rgba(255, 255, 255, 0),
+      0 0px 0px 2px #4c9ffe;
   }
 }

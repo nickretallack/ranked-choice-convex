@@ -1,5 +1,4 @@
 import Loading from "@/components/Loading";
-import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
@@ -30,7 +29,6 @@ export default function ResultsPage() {
   return (
     <PollPage poll={poll}>
       <div className="main-section">
-        <PollNav poll={poll} userId={user?.externalId} />
         {resultsAvailable ? (
           <Results />
         ) : isYourPoll ? (

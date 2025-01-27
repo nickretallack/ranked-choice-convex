@@ -1,5 +1,4 @@
 import Loading from "@/components/Loading";
-import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
 import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
 import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
@@ -53,7 +52,6 @@ export function SettingsPage({
   return (
     <PollPage poll={poll}>
       <div className="main-section">
-        <PollNav poll={poll} userId={user?.externalId} />
         <form ref={formRef} className="form container">
           <PollTitleField value={poll.title} />
           <LiveResultsCheckbox value={poll.liveResults} />

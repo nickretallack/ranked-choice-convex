@@ -6,7 +6,6 @@ import {
 } from "@/components/dndkit/MultipleContainers";
 import Loading from "@/components/Loading";
 
-import PollNav from "@/components/PollNav";
 import PollPage from "@/components/PollPage";
 import { useUser } from "@clerk/clerk-react";
 import { api } from "@convex/_generated/api";
@@ -126,7 +125,7 @@ function VotePage({
           containerId,
         }) => (
           <li
-            className={classNames(classes)}
+            className={classNames(classes, "ranking-item")}
             style={style}
             ref={ref as React.RefObject<HTMLLIElement>}
             data-cypress="draggable-item"
@@ -143,12 +142,9 @@ function VotePage({
       >
         {({ containerViews }) => (
           <>
-            <div className="main-section">
-              <PollNav poll={poll} userId={user?.externalId} />
-              {containerViews["ranking"]}
-            </div>
+            <div className="main-section">{containerViews["ranking"]}</div>
             <div className="candidates">
-              <h2>Candidates</h2>
+              <div className="section-header">Candidates</div>
               {containerViews["candidates"]}
               {poll.allowNominations && (
                 <CandidateNomination
