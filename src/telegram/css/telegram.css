@@ -100,6 +100,7 @@ button {
 .panel {
   background: var(--tg-theme-secondary-bg-color);
   border-radius: 10px;
+  overflow: hidden;
 }
 
 .panel > :only-child {
@@ -170,4 +171,20 @@ button {
   color: var(--tg-theme-hint-color);
   justify-content: center;
   align-content: center;
+}
+
+.actionable-input {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding-left: 16px;
+}
+
+.actionable-input button {
+  width: auto;
+  background: var(--tg-theme-button-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 8px;
+  font-weight: 600;
 }

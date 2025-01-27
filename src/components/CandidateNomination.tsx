@@ -25,7 +25,7 @@ export function CandidateNomination({
       ref={formRef}
       method="post"
       action={`/polls/${pollId}/candidates/add`}
-      className="candidate-nomination"
+      className="container"
       onSubmit={(event) => {
         event.preventDefault();
         const name = normalizeWhitespace(
@@ -55,8 +55,15 @@ export function CandidateNomination({
         }
       }}
     >
-      <input name="name" placeholder="new candidate..." required />
-      <button className="small button">nominate</button>
+      <div className="panel actionable-input">
+        <input
+          name="name"
+          className="text-input"
+          placeholder="new candidate..."
+          required
+        />
+        <button>nominate</button>
+      </div>
     </form>
   );
 }
