@@ -1,6 +1,7 @@
 .Container {
   background: var(--tg-theme-secondary-bg-color);
   border-radius: 10px;
+  min-height: 80px;
 
   display: flex;
   flex-direction: column;

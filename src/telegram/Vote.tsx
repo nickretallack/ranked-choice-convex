@@ -111,52 +111,65 @@ function VotePage({
 
   return (
     <PollPage poll={poll}>
-      <MultipleContainers
-        items={items}
-        setItems={setItems}
-        renderItem={({
-          value,
-          listeners,
-          ref,
-          style,
-          classes,
-          handleProps,
-          index,
-          containerId,
-        }) => (
-          <li
-            className={classNames(classes, "ranking-item")}
-            style={style}
-            ref={ref as React.RefObject<HTMLLIElement>}
-            data-cypress="draggable-item"
-            data-candidate-id={value}
-          >
-            <Handle
-              {...handleProps}
-              {...listeners}
-              index={containerId == "ranking" ? index! + 1 : null}
-            />
-            {candidateMap.current.get(value)!.name}
-          </li>
-        )}
-      >
-        {({ containerViews }) => (
-          <>
-            <div className="main-section">{containerViews["ranking"]}</div>
-            <div className="candidates">
-              <div className="section-header">Candidates</div>
-              {containerViews["candidates"]}
-              {poll.allowNominations && (
-                <CandidateNomination
-                  pollId={poll._id}
-                  candidateMap={candidateMap}
-                  scrollToCandidate={scrollToCandidate}
-                />
-              )}
+      <div className="container">
+        <MultipleContainers
+          items={items}
+          setItems={setItems}
+          containerFallbacks={{
+            ranking: (
+              <div className="fallback">Drag candidates here to vote.</div>
+            ),
+            candidates: (
+              <div className="fallback">
+                Drag candidates here if you don't want to vote for them.
+              </div>
+            ),
+          }}
+          renderItem={({
+            value,
+            listeners,
+            ref,
+            style,
+            classes,
+            handleProps,
+            index,
+            containerId,
+          }) => (
+            <li
+              className={classNames(classes, "ranking-item")}
+              style={style}
+              ref={ref as React.RefObject<HTMLLIElement>}
+              data-cypress="draggable-item"
+              data-candidate-id={value}
+            >
+              <Handle
+                {...handleProps}
+                {...listeners}
+                index={containerId == "ranking" ? index! + 1 : null}
+              />
+              {candidateMap.current.get(value)!.name}
+            </li>
+          )}
+        >
+          {({ containerViews }) => (
+            <div className="vote-split">
+              <div className="ranking">{containerViews["ranking"]}</div>
+              <div className="candidates">
+                <div className="section-header">Candidates</div>
+                {containerViews["candidates"]}
+              </div>
             </div>
-          </>
+          )}
+        </MultipleContainers>
+        {poll.allowNominations && (
+          <CandidateNomination
+            pollId={poll._id}
+            candidateMap={candidateMap}
+            scrollToCandidate={scrollToCandidate}
+          />
         )}
-      </MultipleContainers>
+      </div>
+
       <BottomBar>
         {poll.closed ? (
           <SecondaryButton

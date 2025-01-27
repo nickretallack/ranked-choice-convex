@@ -1,38 +1,38 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  Dispatch,
-  SetStateAction,
-} from "react";
 import {
-  closestCenter,
-  pointerWithin,
-  rectIntersection,
   CollisionDetection,
   DndContext,
   DragOverlay,
   DropAnimation,
-  getFirstCollision,
+  MeasuringStrategy,
+  Modifiers,
   MouseSensor,
   TouchSensor,
-  Modifiers,
   UniqueIdentifier,
-  useSensors,
-  useSensor,
-  MeasuringStrategy,
+  closestCenter,
   defaultDropAnimationSideEffects,
+  getFirstCollision,
+  pointerWithin,
+  rectIntersection,
+  useSensor,
+  useSensors,
 } from "@dnd-kit/core";
+import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
 import {
   SortableContext,
   arrayMove,
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
-import { restrictToVerticalAxis } from "@dnd-kit/modifiers";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
-import { Item } from "./Item";
 import DroppableContainer from "./DroppableContainer";
+import { Item } from "./Item";
 import SortableItem from "./SortableItem";
 
 const dropAnimation: DropAnimation = {
@@ -59,6 +59,7 @@ interface Props {
   trashable?: boolean;
   itemsChanged?: (containerId: UniqueIdentifier, items: Items) => void;
   children: (args: { containerViews: ContainerViews }) => React.ReactNode;
+  containerFallbacks?: Record<UniqueIdentifier, React.ReactNode>;
 }
 
 export function MultipleContainers({
@@ -67,6 +68,7 @@ export function MultipleContainers({
   renderItem,
   itemsChanged,
   children,
+  containerFallbacks,
 }: Props) {
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const lastOverId = useRef<UniqueIdentifier | null>(null);
@@ -87,7 +89,7 @@ export function MultipleContainers({
         return closestCenter({
           ...args,
           droppableContainers: args.droppableContainers.filter(
-            (container) => container.id in items
+            (container) => container.id in items,
           ),
         });
       }
@@ -113,7 +115,7 @@ export function MultipleContainers({
               droppableContainers: args.droppableContainers.filter(
                 (container) =>
                   container.id !== overId &&
-                  containerItems.includes(container.id)
+                  containerItems.includes(container.id),
               ),
             })[0]?.id;
           }
@@ -135,7 +137,7 @@ export function MultipleContainers({
       // If no droppable is matched, return the last match
       return lastOverId.current ? [{ id: lastOverId.current }] : [];
     },
-    [activeId, items]
+    [activeId, items],
   );
   const [clonedItems, setClonedItems] = useState<Items | null>(null);
   const sensors = useSensors(useSensor(MouseSensor), useSensor(TouchSensor));
@@ -177,18 +179,20 @@ export function MultipleContainers({
   }, [items]);
 
   function makeContainer(containerId: string) {
+    const fallback = containerFallbacks?.[containerId];
+    const theItems = items[containerId];
     return (
       <DroppableContainer
         key={containerId}
         id={containerId}
         label={`Column ${containerId}`}
-        items={items[containerId]}
+        items={theItems}
       >
         <SortableContext
-          items={items[containerId]}
+          items={theItems}
           strategy={verticalListSortingStrategy}
         >
-          {items[containerId].map((value, index) => {
+          {theItems.map((value, index) => {
             return (
               <SortableItem
                 key={value}
@@ -199,6 +203,7 @@ export function MultipleContainers({
               />
             );
           })}
+          {theItems.length === 0 && fallback}
         </SortableContext>
       </DroppableContainer>
     );
@@ -270,14 +275,14 @@ export function MultipleContainers({
             return {
               ...items,
               [activeContainer]: items[activeContainer].filter(
-                (item) => item !== active.id
+                (item) => item !== active.id,
               ),
               [overContainer]: [
                 ...items[overContainer].slice(0, newIndex),
                 items[activeContainer][activeIndex],
                 ...items[overContainer].slice(
                   newIndex,
-                  items[overContainer].length
+                  items[overContainer].length,
                 ),
               ],
             };
@@ -312,7 +317,7 @@ export function MultipleContainers({
                 [overContainer]: arrayMove(
                   items[overContainer],
                   activeIndex,
-                  overIndex
+                  overIndex,
                 ),
               };
               itemsChanged?.(overContainer, newItems);

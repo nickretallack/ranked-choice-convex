@@ -51,8 +51,8 @@ export function SettingsPage({
 
   return (
     <PollPage poll={poll}>
-      <div className="main-section">
-        <form ref={formRef} className="form container">
+      <div className="container">
+        <form ref={formRef} className="form">
           <PollTitleField value={poll.title} />
           <LiveResultsCheckbox value={poll.liveResults} />
           <AllowNominationsCheckbox value={poll.allowNominations} />

@@ -53,18 +53,17 @@ h2 {
 
 /* Common container styles */
 .container {
-  padding: 16px;
-  padding-top: 0;
+  padding-inline: 16px;
 }
 
 /* Fix iOS safe areas */
-@supports (padding: max(0px)) {
+/* @supports (padding: max(0px)) {
   .container {
     padding-left: max(16px, env(safe-area-inset-left));
     padding-right: max(16px, env(safe-area-inset-right));
     padding-bottom: max(16px, env(safe-area-inset-bottom));
   }
-}
+} */
 
 /* Common list styles */
 ul {
@@ -228,10 +227,4 @@ button {
   right: 0;
   height: 2px;
   background-color: #2481cc;
-}
-
-.candidate-nomination {
-  padding-bottom: 0;
-  padding-top: 16px;
-  padding-inline: 12px;
 }

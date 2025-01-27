@@ -28,7 +28,7 @@ export default function ResultsPage() {
 
   return (
     <PollPage poll={poll}>
-      <div className="main-section">
+      <div className="container">
         {resultsAvailable ? (
           <Results />
         ) : isYourPoll ? (
