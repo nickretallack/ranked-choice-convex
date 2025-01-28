@@ -1,11 +1,11 @@
-import React from "react";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import {
   AnimateLayoutChanges,
-  useSortable,
   defaultAnimateLayoutChanges,
+  useSortable,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import React from "react";
 
 import { Container, ContainerProps } from "./Container";
 
@@ -42,10 +42,6 @@ export default function DroppableContainer({
     },
     animateLayoutChanges,
   });
-  const isOverContainer = over
-    ? (id === over.id && active?.data.current?.type !== "container") ||
-      items.includes(over.id)
-    : false;
 
   return (
     <Container
@@ -55,11 +51,6 @@ export default function DroppableContainer({
         transition,
         transform: CSS.Translate.toString(transform),
         opacity: isDragging ? 0 : undefined,
-      }}
-      hover={isOverContainer}
-      handleProps={{
-        ...attributes,
-        ...listeners,
       }}
       {...props}
     >
