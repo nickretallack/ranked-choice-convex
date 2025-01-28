@@ -8,7 +8,7 @@
     "dev:frontend": "vite --open",
     "dev:backend": "convex dev",
     "predev": "convex dev --until-success && convex dashboard",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --sourcemap",
     "lint": "tsc && eslint .  --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
@@ -22,7 +22,7 @@
     "@grammyjs/validator": "^1.0.1",
     "@twa-dev/sdk": "^8.0.1",
     "classnames": "^2.5.1",
-    "convex": "^1.17.0",
+    "convex": "^1.18.2",
     "grammy": "^1.33.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",

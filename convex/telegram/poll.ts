@@ -94,6 +94,7 @@ export const listForUser = query({
 });
 
 export const listTelegramPollIds = query({
+  args: {},
   handler: async (ctx) => {
     // efficient implementation of DISTINCT pollId
     const pollIds = [];

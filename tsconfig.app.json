@@ -30,5 +30,6 @@
       "@convex/shared/*": ["./convex/shared/*"]
     }
   },
-  "include": ["src", "convex/shared"]
+  "include": ["src", "convex"],
+  "exclude": ["convex/_generated", "convex/convex.config.ts"]
 }
