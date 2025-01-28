@@ -1,13 +1,6 @@
 import { Auth } from "convex/server";
 import { Id } from "./_generated/dataModel";
-
-export type ClerkPublicMetadata = {
-  telegramUserId: number;
-  telegramUsername: string;
-  telegramPhotoUrl: string;
-  telegramFirstName: string;
-  telegramLastName: string;
-};
+import type { ClerkPublicMetadata } from "./util/userType";
 
 export type ClerkUser = {
   publicMetadata: ClerkPublicMetadata;

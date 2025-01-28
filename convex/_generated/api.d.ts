@@ -16,7 +16,6 @@ import type {
 import type * as ballot from "../ballot.js";
 import type * as candidate from "../candidate.js";
 import type * as http from "../http.js";
-import type * as messages from "../messages.js";
 import type * as poll from "../poll.js";
 import type * as tally from "../tally.js";
 import type * as telegram_actions from "../telegram/actions.js";
@@ -31,6 +30,7 @@ import type * as userHelpers from "../userHelpers.js";
 import type * as util_indexByUniqueIdentifier from "../util/indexByUniqueIdentifier.js";
 import type * as util_normalizeWhitespace from "../util/normalizeWhitespace.js";
 import type * as util_recordIncrement from "../util/recordIncrement.js";
+import type * as util_userType from "../util/userType.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -44,7 +44,6 @@ declare const fullApi: ApiFromModules<{
   ballot: typeof ballot;
   candidate: typeof candidate;
   http: typeof http;
-  messages: typeof messages;
   poll: typeof poll;
   tally: typeof tally;
   "telegram/actions": typeof telegram_actions;
@@ -59,6 +58,7 @@ declare const fullApi: ApiFromModules<{
   "util/indexByUniqueIdentifier": typeof util_indexByUniqueIdentifier;
   "util/normalizeWhitespace": typeof util_normalizeWhitespace;
   "util/recordIncrement": typeof util_recordIncrement;
+  "util/userType": typeof util_userType;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,
