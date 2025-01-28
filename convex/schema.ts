@@ -1,11 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
-// The schema is entirely optional.
-// You can delete this file (schema.ts) and the
-// app will continue to work.
-// The schema provides more precise TypeScript types.
-
 export const telegramUserDetailsFields = {
   telegramUserId: v.number(),
   username: v.optional(v.string()),
@@ -15,10 +10,6 @@ export const telegramUserDetailsFields = {
 };
 
 export default defineSchema({
-  messages: defineTable({
-    author: v.string(),
-    body: v.string(),
-  }),
   poll: defineTable({
     title: v.string(),
     creatorId: v.optional(v.id("user")),
@@ -28,9 +19,12 @@ export default defineSchema({
   }).index("by_creatorId", ["creatorId"]),
   candidate: defineTable({
     name: v.string(),
+    normalizedName: v.string(),
     pollId: v.id("poll"),
     creatorId: v.optional(v.id("user")),
-  }).index("by_pollId", ["pollId"]),
+  })
+    .index("by_pollId", ["pollId"])
+    .index("by_pollId_normalizedName", ["pollId", "normalizedName"]),
   ballot: defineTable({
     userId: v.id("user"),
     pollId: v.id("poll"),

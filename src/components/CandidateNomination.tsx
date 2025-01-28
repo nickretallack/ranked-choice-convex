@@ -39,7 +39,9 @@ export function CandidateNomination({
 
         const existingCandidateId = Array.from(
           candidateMap.current.values(),
-        ).find((candidate) => candidate.name === name)?._id;
+        ).find(
+          (candidate) => candidate.name.toLowerCase() === name.toLowerCase(),
+        )?._id;
 
         if (existingCandidateId) {
           formRef.current?.reset();
