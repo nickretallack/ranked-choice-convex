@@ -12,8 +12,6 @@ module.exports = {
     "convex/_generated",
     "postcss.config.js",
     "vite.config.ts",
-    // shadcn components by default violate some rules
-    "src/components/ui",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
