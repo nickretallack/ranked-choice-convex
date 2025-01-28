@@ -1,7 +1,7 @@
 import Loading from "@/components/Loading";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
-import { indexByUniqueIdentifier } from "@convex/util/indexByUniqueIdentifier";
+import { indexByUniqueIdentifier } from "@convex/shared/indexByUniqueIdentifier";
 import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";

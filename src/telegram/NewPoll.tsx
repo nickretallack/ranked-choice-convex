@@ -3,7 +3,7 @@ import AllowNominationsCheckbox from "@/components/settings/AllowNominationsChec
 import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
 import { api } from "@convex/_generated/api";
-import { trimList } from "@convex/util/normalizeWhitespace";
+import { trimList } from "@convex/shared/normalizeWhitespace";
 import Telegram from "@twa-dev/sdk";
 import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation } from "convex/react";

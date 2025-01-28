@@ -182,12 +182,7 @@ export function MultipleContainers({
     const fallback = containerFallbacks?.[containerId];
     const theItems = items[containerId];
     return (
-      <DroppableContainer
-        key={containerId}
-        id={containerId}
-        label={`Column ${containerId}`}
-        items={theItems}
-      >
+      <DroppableContainer key={containerId} id={containerId} items={theItems}>
         <SortableContext
           items={theItems}
           strategy={verticalListSortingStrategy}

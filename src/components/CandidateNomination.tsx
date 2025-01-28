@@ -1,6 +1,6 @@
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
-import { normalizeWhitespace } from "@convex/util/normalizeWhitespace";
+import { normalizeWhitespace } from "@convex/shared/normalizeWhitespace";
 import { UniqueIdentifier } from "@dnd-kit/core";
 import Telegram from "@twa-dev/sdk";
 import { useMutation } from "convex/react";

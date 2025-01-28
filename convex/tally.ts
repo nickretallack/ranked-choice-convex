@@ -1,5 +1,5 @@
 import { Doc, Id } from "./_generated/dataModel";
-import recordIncrement from "./util/recordIncrement";
+import recordIncrement from "./shared/recordIncrement";
 
 type RoundsByCandidate = Record<Id<"candidate">, number[]>;
 export type PollResults = {

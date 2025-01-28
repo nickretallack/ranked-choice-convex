@@ -1,6 +1,6 @@
-import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -8,7 +8,8 @@ export default defineConfig({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
-      "@convex": path.resolve(__dirname, "./convex"),
+      "@convex/_generated": path.resolve(__dirname, "./convex/_generated"),
+      "@convex/shared": path.resolve(__dirname, "./convex/shared"),
     },
   },
 });

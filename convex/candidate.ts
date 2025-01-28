@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
+import { normalizeWhitespace } from "./shared/normalizeWhitespace";
 import { requireUser } from "./userHelpers";
-import { normalizeWhitespace } from "./util/normalizeWhitespace";
 
 export const list = query({
   args: { pollId: v.id("poll") },

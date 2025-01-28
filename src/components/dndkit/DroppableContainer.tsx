@@ -25,16 +25,7 @@ export default function DroppableContainer({
   items: UniqueIdentifier[];
   style?: React.CSSProperties;
 }) {
-  const {
-    active,
-    attributes,
-    isDragging,
-    listeners,
-    over,
-    setNodeRef,
-    transition,
-    transform,
-  } = useSortable({
+  const { isDragging, setNodeRef, transition, transform } = useSortable({
     id,
     data: {
       type: "container",

@@ -1,6 +1,6 @@
 import { useUser as clerkUseUser } from "@clerk/clerk-react";
 import { Id } from "@convex/_generated/dataModel";
-import type { ClerkPublicMetadata } from "@convex/util/userType";
+import type { ClerkPublicMetadata } from "@convex/shared/userType";
 
 export default function useUser() {
   const { user } = clerkUseUser();

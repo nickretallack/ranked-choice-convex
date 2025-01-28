@@ -1,6 +1,6 @@
 import { Auth } from "convex/server";
 import { Id } from "./_generated/dataModel";
-import type { ClerkPublicMetadata } from "./util/userType";
+import type { ClerkPublicMetadata } from "./shared/userType";
 
 export type ClerkUser = {
   publicMetadata: ClerkPublicMetadata;

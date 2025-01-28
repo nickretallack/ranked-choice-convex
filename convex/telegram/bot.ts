@@ -16,7 +16,7 @@ import type { InlineQueryResultArticle } from "grammy/types";
 import { api } from "../_generated/api";
 import { Doc, Id } from "../_generated/dataModel";
 import { ActionCtx } from "../_generated/server";
-import { indexByUniqueIdentifier } from "../util/indexByUniqueIdentifier";
+import { indexByUniqueIdentifier } from "../shared/indexByUniqueIdentifier";
 
 type Poll = {
   _id: Id<"poll">;

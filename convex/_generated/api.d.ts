@@ -13,6 +13,10 @@ import type * as candidate from "../candidate.js";
 import type * as http from "../http.js";
 import type * as migrations from "../migrations.js";
 import type * as poll from "../poll.js";
+import type * as shared_indexByUniqueIdentifier from "../shared/indexByUniqueIdentifier.js";
+import type * as shared_normalizeWhitespace from "../shared/normalizeWhitespace.js";
+import type * as shared_recordIncrement from "../shared/recordIncrement.js";
+import type * as shared_userType from "../shared/userType.js";
 import type * as tally from "../tally.js";
 import type * as telegram_actions from "../telegram/actions.js";
 import type * as telegram_bot from "../telegram/bot.js";
@@ -23,10 +27,6 @@ import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
 import type * as test_testTypes from "../test/testTypes.js";
 import type * as userHelpers from "../userHelpers.js";
-import type * as util_indexByUniqueIdentifier from "../util/indexByUniqueIdentifier.js";
-import type * as util_normalizeWhitespace from "../util/normalizeWhitespace.js";
-import type * as util_recordIncrement from "../util/recordIncrement.js";
-import type * as util_userType from "../util/userType.js";
 
 import type {
   ApiFromModules,
@@ -47,6 +47,10 @@ declare const fullApi: ApiFromModules<{
   http: typeof http;
   migrations: typeof migrations;
   poll: typeof poll;
+  "shared/indexByUniqueIdentifier": typeof shared_indexByUniqueIdentifier;
+  "shared/normalizeWhitespace": typeof shared_normalizeWhitespace;
+  "shared/recordIncrement": typeof shared_recordIncrement;
+  "shared/userType": typeof shared_userType;
   tally: typeof tally;
   "telegram/actions": typeof telegram_actions;
   "telegram/bot": typeof telegram_bot;
@@ -57,10 +61,6 @@ declare const fullApi: ApiFromModules<{
   "telegram/webhook": typeof telegram_webhook;
   "test/testTypes": typeof test_testTypes;
   userHelpers: typeof userHelpers;
-  "util/indexByUniqueIdentifier": typeof util_indexByUniqueIdentifier;
-  "util/normalizeWhitespace": typeof util_normalizeWhitespace;
-  "util/recordIncrement": typeof util_recordIncrement;
-  "util/userType": typeof util_userType;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

@@ -1,6 +1,6 @@
 import { v } from "convex/values";
 import { mutation, query } from "../_generated/server";
-import { trimList } from "../util/normalizeWhitespace";
+import { trimList } from "../shared/normalizeWhitespace";
 
 export const create = mutation({
   args: {
@@ -23,6 +23,7 @@ export const create = mutation({
       trimList(candidates).map((candidate) =>
         ctx.db.insert("candidate", {
           name: candidate,
+          normalizedName: candidate.toLowerCase(),
           pollId,
         }),
       ),

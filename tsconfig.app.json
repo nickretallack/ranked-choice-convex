@@ -26,8 +26,9 @@
     /* Import paths */
     "paths": {
       "@/*": ["./src/*"],
-      "@convex/*": ["./convex/*"]
+      // "@convex/_generated/*": ["./convex/_generated/*"],
+      "@convex/shared/*": ["./convex/shared/*"]
     }
   },
-  "include": ["src", "convex/util"]
+  "include": ["src", "convex/shared"]
 }
