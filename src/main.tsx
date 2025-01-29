@@ -11,7 +11,7 @@ const convex = new ConvexReactClient(import.meta.env.VITE_CONVEX_URL as string);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <ClerkProvider publishableKey="pk_test_d2l0dHktc2x1Zy0zMS5jbGVyay5hY2NvdW50cy5kZXYk">
+    <ClerkProvider publishableKey={import.meta.env.VITE_CLERK_PUBLISHABLE_KEY}>
       <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
         <BrowserRouter>
           <Routes>{TelegramRoutes}</Routes>
