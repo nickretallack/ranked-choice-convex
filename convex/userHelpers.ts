@@ -16,7 +16,7 @@ export async function requireUser(ctx: { auth: Auth }) {
     throw new Error("Who are you?");
   }
   return {
-    id: identity.externalId as Id<"user">,
+    id: identity.externalId as Id<"users">,
     publicMetadata: identity.publicMetadata as ClerkPublicMetadata,
   };
 }

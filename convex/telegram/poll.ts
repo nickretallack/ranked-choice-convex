@@ -35,7 +35,7 @@ export const create = mutation({
 export const claim = mutation({
   args: {
     pollId: v.id("poll"),
-    creatorId: v.id("user"),
+    creatorId: v.id("users"),
   },
   handler: async (ctx, { pollId, creatorId }) => {
     await ctx.db.patch(pollId, {

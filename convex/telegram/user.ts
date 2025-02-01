@@ -33,7 +33,7 @@ export const upsert = mutation({
     }
 
     // Create a new user
-    const userId = await ctx.db.insert("user", {});
+    const userId = await ctx.db.insert("users", {});
     const user = (await ctx.db.get(userId))!;
     await ctx.db.insert("telegramUser", {
       userId,
@@ -42,15 +42,5 @@ export const upsert = mutation({
     });
 
     return { user, changed: false, created: true };
-  },
-});
-
-export const setClerkUserId = mutation({
-  args: {
-    userId: v.id("user"),
-    clerkUserId: v.string(),
-  },
-  handler: async (ctx, { userId, clerkUserId }) => {
-    await ctx.db.patch(userId, { clerkUserId });
   },
 });

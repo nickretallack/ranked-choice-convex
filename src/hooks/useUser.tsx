@@ -5,7 +5,7 @@ import type { ClerkPublicMetadata } from "@convex/shared/userType";
 export default function useUser() {
   const { user } = clerkUseUser();
   return {
-    id: user?.externalId as Id<"user">,
+    id: user?.externalId as Id<"users">,
     publicMetadata: user?.publicMetadata as ClerkPublicMetadata,
   };
 }
