@@ -1,16 +1,20 @@
+"use node";
+
 import { ConvexCredentials } from "@convex-dev/auth/providers/ConvexCredentials";
 import { validateWebAppData } from "@grammyjs/validator";
 import type { WebAppUser } from "@twa-dev/types";
 import { api } from "../_generated/api";
+import { Doc } from "../_generated/dataModel";
 
 export const TelegramProvider = ConvexCredentials({
+  id: "telegram",
   authorize: async (credentials, ctx) => {
     const telegramUserDetails = validateInitData(
       credentials.initData as string,
     );
-    const { user } = await ctx.runMutation(api.telegram.user.upsert, {
+    const { user } = (await ctx.runMutation(api.telegram.user.upsert, {
       telegramUserDetails,
-    });
+    })) as { user: Doc<"users"> };
     return { userId: user._id };
   },
 });

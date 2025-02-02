@@ -1,6 +1,3 @@
-// import { validateWebAppData } from "@grammyjs/validator";
-// import type { WebAppUser } from "@twa-dev/types";
-
 export default {
   providers: [
     {

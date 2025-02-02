@@ -19,7 +19,6 @@ import type * as shared_normalizeWhitespace from "../shared/normalizeWhitespace.
 import type * as shared_recordIncrement from "../shared/recordIncrement.js";
 import type * as shared_userType from "../shared/userType.js";
 import type * as tally from "../tally.js";
-import type * as telegram_actions from "../telegram/actions.js";
 import type * as telegram_auth from "../telegram/auth.js";
 import type * as telegram_bot from "../telegram/bot.js";
 import type * as telegram_inlineMessages from "../telegram/inlineMessages.js";
@@ -55,7 +54,6 @@ declare const fullApi: ApiFromModules<{
   "shared/recordIncrement": typeof shared_recordIncrement;
   "shared/userType": typeof shared_userType;
   tally: typeof tally;
-  "telegram/actions": typeof telegram_actions;
   "telegram/auth": typeof telegram_auth;
   "telegram/bot": typeof telegram_bot;
   "telegram/inlineMessages": typeof telegram_inlineMessages;
