@@ -104,7 +104,7 @@ function VotePage({
         setItems={setItems}
         containerFallbacks={{
           ranking: (
-            <div className="fallback">Drag candidates here to vote.</div>
+            <div className="fallback">Drag candidates here to rank them.</div>
           ),
           candidates: (
             <div className="fallback">
