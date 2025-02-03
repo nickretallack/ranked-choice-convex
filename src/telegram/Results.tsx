@@ -2,6 +2,7 @@ import Loading from "@/components/Loading";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/shared/indexByUniqueIdentifier";
+import Telegram from "@twa-dev/sdk";
 import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";
@@ -38,12 +39,22 @@ export default function ResultsPage() {
           (poll.closed ? (
             <MainButton
               text="Reopen Poll"
-              onClick={() => void reopenPoll({ id: poll._id })}
+              onClick={() =>
+                void reopenPoll({
+                  id: poll._id,
+                  telegramInitData: Telegram.initData,
+                })
+              }
             />
           ) : (
             <MainButton
               text="Close Poll"
-              onClick={() => void closePoll({ id: poll._id })}
+              onClick={() =>
+                void closePoll({
+                  id: poll._id,
+                  telegramInitData: Telegram.initData,
+                })
+              }
             />
           ))}
       </BottomBar>

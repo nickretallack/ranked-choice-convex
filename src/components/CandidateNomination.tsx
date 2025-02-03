@@ -47,7 +47,11 @@ export function CandidateNomination({
           formRef.current?.reset();
           scrollToCandidate(existingCandidateId);
         } else {
-          nominate({ pollId, name }).then(
+          nominate({
+            pollId,
+            name,
+            telegramInitData: Telegram.initData,
+          }).then(
             (candidateId) => {
               formRef.current?.reset();
               scrollToCandidate(candidateId);

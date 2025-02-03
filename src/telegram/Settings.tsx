@@ -4,6 +4,7 @@ import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
 import { api } from "@convex/_generated/api";
 import { Doc } from "@convex/_generated/dataModel";
+import Telegram from "@twa-dev/sdk";
 import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation } from "convex/react";
 import { useCallback, useEffect, useRef, useState } from "react";
@@ -47,6 +48,7 @@ export function SettingsPage({ poll }: { poll: Doc<"poll"> }) {
       await updateSettings({
         id: poll._id,
         ...values,
+        telegramInitData: Telegram.initData,
       });
       setFormDirty(false);
     })();
