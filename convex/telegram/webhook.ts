@@ -2,7 +2,7 @@ import { webhookCallback } from "grammy";
 import { httpAction } from "../_generated/server";
 import { createBot } from "./bot";
 
-export const webhook = httpAction(async (ctx, req) => {
+export default httpAction(async (ctx, req) => {
   const bot = createBot(ctx);
   const handleUpdate = webhookCallback(bot, "std/http");
 
@@ -17,5 +17,3 @@ export const webhook = httpAction(async (ctx, req) => {
     return new Response();
   }
 });
-
-export default webhook;
