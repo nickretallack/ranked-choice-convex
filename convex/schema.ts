@@ -44,4 +44,10 @@ export default defineSchema({
   })
     .index("by_telegramUserId", ["telegramUserId"])
     .index("by_userId", ["userId"]),
+  discordUser: defineTable({
+    discordUserId: v.string(),
+    userId: v.id("users"),
+  })
+    .index("by_discordUserId", ["discordUserId"])
+    .index("by_userId", ["userId"]),
 });

@@ -151,7 +151,7 @@ export function createBot(convexCtx: ActionCtx) {
     button: {
       text: "Make a new poll",
       web_app: {
-        url: `${process.env.TELEGRAM_MINI_APP_URL}/telegram/polls/new`,
+        url: `${process.env.SITE_ROOT_URL}/telegram/polls/new`,
       },
     },
     cache_time: 0,

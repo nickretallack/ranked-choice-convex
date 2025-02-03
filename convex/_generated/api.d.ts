@@ -10,6 +10,8 @@
 
 import type * as ballot from "../ballot.js";
 import type * as candidate from "../candidate.js";
+import type * as discord_poll from "../discord/poll.js";
+import type * as discord_user from "../discord/user.js";
 import type * as discord_webhook from "../discord/webhook.js";
 import type * as http from "../http.js";
 import type * as migrations from "../migrations.js";
@@ -41,6 +43,8 @@ import type {
 declare const fullApi: ApiFromModules<{
   ballot: typeof ballot;
   candidate: typeof candidate;
+  "discord/poll": typeof discord_poll;
+  "discord/user": typeof discord_user;
   "discord/webhook": typeof discord_webhook;
   http: typeof http;
   migrations: typeof migrations;
