@@ -1,5 +1,4 @@
 import { Doc, Id } from "./_generated/dataModel";
-import recordIncrement from "./shared/recordIncrement";
 
 type RoundsByCandidate = Record<Id<"candidate">, number[]>;
 export type PollResults = {
@@ -122,4 +121,12 @@ function moveBallotToNextChoice(
   }
   // ballot exhausted
   redistributedVotes.ballotsExhausted += 1;
+}
+
+function recordIncrement<Key extends string | number | symbol>(
+  record: Record<Key, number>,
+  key: Key,
+) {
+  const value = record[key] || 0;
+  record[key] = value + 1;
 }

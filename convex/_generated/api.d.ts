@@ -15,8 +15,6 @@ import type * as migrations from "../migrations.js";
 import type * as poll from "../poll.js";
 import type * as shared_indexByUniqueIdentifier from "../shared/indexByUniqueIdentifier.js";
 import type * as shared_normalizeWhitespace from "../shared/normalizeWhitespace.js";
-import type * as shared_recordIncrement from "../shared/recordIncrement.js";
-import type * as shared_userType from "../shared/userType.js";
 import type * as tally from "../tally.js";
 import type * as telegram_bot from "../telegram/bot.js";
 import type * as telegram_inlineMessages from "../telegram/inlineMessages.js";
@@ -47,8 +45,6 @@ declare const fullApi: ApiFromModules<{
   poll: typeof poll;
   "shared/indexByUniqueIdentifier": typeof shared_indexByUniqueIdentifier;
   "shared/normalizeWhitespace": typeof shared_normalizeWhitespace;
-  "shared/recordIncrement": typeof shared_recordIncrement;
-  "shared/userType": typeof shared_userType;
   tally: typeof tally;
   "telegram/bot": typeof telegram_bot;
   "telegram/inlineMessages": typeof telegram_inlineMessages;
