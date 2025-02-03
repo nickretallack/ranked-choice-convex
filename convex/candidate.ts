@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { normalizeWhitespace } from "./shared/normalizeWhitespace";
-import { requireUser } from "./userHelpers";
+import { requireUserId } from "./user";
 
 export const list = query({
   args: { pollId: v.id("poll") },
@@ -16,7 +16,7 @@ export const list = query({
 export const nominate = mutation({
   args: { pollId: v.id("poll"), name: v.string() },
   handler: async (ctx, { pollId, name }) => {
-    const userId = (await requireUser(ctx)).id;
+    const userId = await requireUserId(ctx);
 
     const strippedName = normalizeWhitespace(name);
     if (!strippedName) throw new Error("Name cannot be empty");

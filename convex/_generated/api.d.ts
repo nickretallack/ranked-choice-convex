@@ -27,7 +27,7 @@ import type * as telegram_poll from "../telegram/poll.js";
 import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
 import type * as test_testTypes from "../test/testTypes.js";
-import type * as userHelpers from "../userHelpers.js";
+import type * as user from "../user.js";
 
 import type {
   ApiFromModules,
@@ -62,7 +62,7 @@ declare const fullApi: ApiFromModules<{
   "telegram/user": typeof telegram_user;
   "telegram/webhook": typeof telegram_webhook;
   "test/testTypes": typeof test_testTypes;
-  userHelpers: typeof userHelpers;
+  user: typeof user;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

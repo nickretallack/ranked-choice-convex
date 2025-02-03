@@ -4,7 +4,7 @@ import { api } from "./_generated/api";
 import { DataModel, Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { PollResults, tallyResults } from "./tally";
-import { requireUser } from "./userHelpers";
+import { requireUserId } from "./user";
 
 export const get = query({
   args: { id: v.id("poll") },
@@ -69,11 +69,11 @@ async function requirePollOwner(
   ctx: GenericMutationCtx<DataModel>,
   id: Id<"poll">,
 ) {
-  const user = await requireUser(ctx);
+  const userId = await requireUserId(ctx);
 
   const poll = await ctx.db.get(id);
   if (!poll) throw new Error("Poll not found");
-  if (poll.creatorId !== user.id)
+  if (poll.creatorId !== userId)
     throw new Error("You are not the owner of this poll.");
-  return { poll, user };
+  return { poll, userId };
 }

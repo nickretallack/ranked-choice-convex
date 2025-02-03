@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
-import { requireUser } from "./userHelpers";
+import { requireUserId } from "./user";
 
 export const save = mutation({
   args: {
@@ -9,7 +9,7 @@ export const save = mutation({
     ranking: v.array(v.id("candidate")),
   },
   handler: async (ctx, { pollId, ranking }) => {
-    const userId = (await requireUser(ctx)).id;
+    const userId = await requireUserId(ctx);
 
     const poll = await ctx.db.get(pollId);
     if (!poll) throw new Error("Poll not found");
@@ -58,7 +58,7 @@ export const get = query({
     pollId: v.id("poll"),
   },
   handler: async (ctx, { pollId }) => {
-    const userId = (await requireUser(ctx)).id;
+    const userId = await requireUserId(ctx);
     const ballot = await ctx.db
       .query("ballot")
       .withIndex("by_userId_pollId", (q) =>

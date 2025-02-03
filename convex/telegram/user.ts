@@ -1,5 +1,5 @@
 import { v } from "convex/values";
-import { mutation } from "../_generated/server";
+import { mutation, query } from "../_generated/server";
 import { telegramUserDetailsFields } from "../schema";
 
 export const upsert = mutation({
@@ -42,5 +42,17 @@ export const upsert = mutation({
     });
 
     return { user, changed: false, created: true };
+  },
+});
+
+export const getByUserId = query({
+  args: {
+    userId: v.id("users"),
+  },
+  handler: async (ctx, { userId }) => {
+    return await ctx.db
+      .query("telegramUser")
+      .withIndex("by_userId", (q) => q.eq("userId", userId))
+      .unique();
   },
 });

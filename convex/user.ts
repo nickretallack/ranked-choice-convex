@@ -10,13 +10,19 @@ export type ClerkUser = {
   username: string;
 };
 
-export async function requireUser(ctx: { auth: Auth }) {
+export async function getUserId(ctx: { auth: Auth }) {
   const identity = await ctx.auth.getUserIdentity();
   if (!identity) {
+    return null;
+  }
+  const subjectParts = identity.subject.split("|");
+  return subjectParts[0] as Id<"users">;
+}
+
+export async function requireUserId(ctx: { auth: Auth }) {
+  const userId = await getUserId(ctx);
+  if (!userId) {
     throw new Error("Who are you?");
   }
-  return {
-    id: identity.externalId as Id<"users">,
-    publicMetadata: identity.publicMetadata as ClerkPublicMetadata,
-  };
+  return userId;
 }
