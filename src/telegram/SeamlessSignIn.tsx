@@ -6,9 +6,10 @@ import { useCallback, useEffect, useState } from "react";
 import { Outlet } from "react-router";
 
 export default function SeamlessSignIn() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
+  const { isLoading } = useConvexAuth();
   const { signIn, signOut } = useAuthActions();
   const [error, setError] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   const seamlessSignIn = useCallback(async () => {
     if (isLoading) return;
@@ -16,6 +17,7 @@ export default function SeamlessSignIn() {
       await signIn("telegram", {
         initData: Telegram.initData,
       });
+      setReady(true);
     } catch (error) {
       setError(error instanceof Error ? error.message : String(error));
       await signOut();
@@ -26,7 +28,7 @@ export default function SeamlessSignIn() {
     void seamlessSignIn();
   }, [seamlessSignIn]);
 
-  if (isAuthenticated) {
+  if (ready) {
     return <Outlet />;
   }
 
