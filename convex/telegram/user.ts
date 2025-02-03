@@ -2,7 +2,7 @@ import type { WebAppUser } from "@twa-dev/types";
 import { GenericMutationCtx, GenericQueryCtx } from "convex/server";
 import { v } from "convex/values";
 import { api } from "../_generated/api";
-import { DataModel } from "../_generated/dataModel";
+import { DataModel, Doc } from "../_generated/dataModel";
 import { mutation, query } from "../_generated/server";
 import { telegramUserDetailsFields } from "../schema";
 
@@ -43,6 +43,16 @@ export const upsert = mutation({
   },
 });
 
+export const getByInitData = query({
+  args: {
+    initData: v.string(),
+  },
+  handler: async (ctx, { initData }) => {
+    const telegramUserDetails = await validateInitData(initData);
+    return await getTelegramUser(ctx, telegramUserDetails.telegramUserId);
+  },
+});
+
 export const getByUserId = query({
   args: {
     userId: v.id("users"),
@@ -69,8 +79,8 @@ function getTelegramUser(
 
 // Queries can use this to get the telegram user's userId if they're already in the database
 export async function getUserId(
-  initData: string,
   ctx: GenericQueryCtx<DataModel>,
+  initData: string,
 ) {
   const telegramUserDetails = await validateInitData(initData);
   const telegramUser = await getTelegramUser(
@@ -85,13 +95,13 @@ export async function getUserId(
 
 // Mutations can use this to get the telegram user's userId regardless of whether they're already in the database
 export async function resolveUserId(
-  initData: string,
   ctx: GenericMutationCtx<DataModel>,
+  initData: string,
 ) {
   const telegramUserDetails = await validateInitData(initData);
-  const { user } = await ctx.runMutation(api.telegram.user.upsert, {
+  const { user } = (await ctx.runMutation(api.telegram.user.upsert, {
     telegramUserDetails,
-  });
+  })) as { user: Doc<"users"> };
   return user._id;
 }
 

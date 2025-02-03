@@ -74,7 +74,7 @@ async function requirePollOwner(
   id: Id<"poll">,
   telegramInitData: string,
 ) {
-  const userId = await resolveUserId(telegramInitData, ctx);
+  const userId = await resolveUserId(ctx, telegramInitData);
 
   const poll = await ctx.db.get(id);
   if (!poll) throw new Error("Poll not found");

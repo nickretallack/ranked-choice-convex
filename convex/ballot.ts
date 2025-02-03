@@ -10,7 +10,7 @@ export const save = mutation({
     telegramInitData: v.string(),
   },
   handler: async (ctx, { pollId, ranking, telegramInitData }) => {
-    const userId = await resolveUserId(telegramInitData, ctx);
+    const userId = await resolveUserId(ctx, telegramInitData);
 
     const poll = await ctx.db.get(pollId);
     if (!poll) throw new Error("Poll not found");
@@ -60,7 +60,7 @@ export const get = query({
     telegramInitData: v.string(),
   },
   handler: async (ctx, { pollId, telegramInitData }) => {
-    const userId = await getUserId(telegramInitData, ctx);
+    const userId = await getUserId(ctx, telegramInitData);
     if (!userId) return [];
     const ballot = await ctx.db
       .query("ballot")

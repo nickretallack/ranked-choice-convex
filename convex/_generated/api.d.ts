@@ -8,7 +8,6 @@
  * @module
  */
 
-import type * as auth from "../auth.js";
 import type * as ballot from "../ballot.js";
 import type * as candidate from "../candidate.js";
 import type * as http from "../http.js";
@@ -19,7 +18,6 @@ import type * as shared_normalizeWhitespace from "../shared/normalizeWhitespace.
 import type * as shared_recordIncrement from "../shared/recordIncrement.js";
 import type * as shared_userType from "../shared/userType.js";
 import type * as tally from "../tally.js";
-import type * as telegram_auth from "../telegram/auth.js";
 import type * as telegram_bot from "../telegram/bot.js";
 import type * as telegram_inlineMessages from "../telegram/inlineMessages.js";
 import type * as telegram_openid from "../telegram/openid.js";
@@ -27,7 +25,6 @@ import type * as telegram_poll from "../telegram/poll.js";
 import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
 import type * as test_testTypes from "../test/testTypes.js";
-import type * as user from "../user.js";
 
 import type {
   ApiFromModules,
@@ -43,7 +40,6 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
-  auth: typeof auth;
   ballot: typeof ballot;
   candidate: typeof candidate;
   http: typeof http;
@@ -54,7 +50,6 @@ declare const fullApi: ApiFromModules<{
   "shared/recordIncrement": typeof shared_recordIncrement;
   "shared/userType": typeof shared_userType;
   tally: typeof tally;
-  "telegram/auth": typeof telegram_auth;
   "telegram/bot": typeof telegram_bot;
   "telegram/inlineMessages": typeof telegram_inlineMessages;
   "telegram/openid": typeof telegram_openid;
@@ -62,7 +57,6 @@ declare const fullApi: ApiFromModules<{
   "telegram/user": typeof telegram_user;
   "telegram/webhook": typeof telegram_webhook;
   "test/testTypes": typeof test_testTypes;
-  user: typeof user;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 
