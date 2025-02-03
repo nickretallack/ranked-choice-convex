@@ -4,7 +4,7 @@ import { api } from "./_generated/api";
 import { DataModel, Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { PollResults, tallyResults } from "./tally";
-import { requireUserId } from "./user";
+import { resolveUserId } from "./telegram/user";
 
 export const get = query({
   args: { id: v.id("poll") },
@@ -19,9 +19,13 @@ export const updateSettings = mutation({
     title: v.string(),
     allowNominations: v.boolean(),
     liveResults: v.boolean(),
+    telegramInitData: v.string(),
   },
-  handler: async (ctx, { id, title, allowNominations, liveResults }) => {
-    await requirePollOwner(ctx, id);
+  handler: async (
+    ctx,
+    { id, title, allowNominations, liveResults, telegramInitData },
+  ) => {
+    await requirePollOwner(ctx, id, telegramInitData);
     return await ctx.db.patch(id, { title, allowNominations, liveResults });
   },
 });
@@ -44,9 +48,9 @@ export const getResults = query({
 });
 
 export const close = mutation({
-  args: { id: v.id("poll") },
-  handler: async (ctx, { id }) => {
-    const { poll } = await requirePollOwner(ctx, id);
+  args: { id: v.id("poll"), telegramInitData: v.string() },
+  handler: async (ctx, { id, telegramInitData }) => {
+    const { poll } = await requirePollOwner(ctx, id, telegramInitData);
     await ctx.db.patch(id, { closed: true });
 
     if (!poll.liveResults) {
@@ -58,9 +62,9 @@ export const close = mutation({
 });
 
 export const reopen = mutation({
-  args: { id: v.id("poll") },
-  handler: async (ctx, { id }) => {
-    await requirePollOwner(ctx, id);
+  args: { id: v.id("poll"), telegramInitData: v.string() },
+  handler: async (ctx, { id, telegramInitData }) => {
+    await requirePollOwner(ctx, id, telegramInitData);
     return await ctx.db.patch(id, { closed: false });
   },
 });
@@ -68,8 +72,9 @@ export const reopen = mutation({
 async function requirePollOwner(
   ctx: GenericMutationCtx<DataModel>,
   id: Id<"poll">,
+  telegramInitData: string,
 ) {
-  const userId = await requireUserId(ctx);
+  const userId = await resolveUserId(telegramInitData, ctx);
 
   const poll = await ctx.db.get(id);
   if (!poll) throw new Error("Poll not found");

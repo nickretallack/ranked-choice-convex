@@ -1,15 +1,16 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
-import { requireUserId } from "./user";
+import { getUserId, resolveUserId } from "./telegram/user";
 
 export const save = mutation({
   args: {
     pollId: v.id("poll"),
     ranking: v.array(v.id("candidate")),
+    telegramInitData: v.string(),
   },
-  handler: async (ctx, { pollId, ranking }) => {
-    const userId = await requireUserId(ctx);
+  handler: async (ctx, { pollId, ranking, telegramInitData }) => {
+    const userId = await resolveUserId(telegramInitData, ctx);
 
     const poll = await ctx.db.get(pollId);
     if (!poll) throw new Error("Poll not found");
@@ -56,9 +57,11 @@ export const save = mutation({
 export const get = query({
   args: {
     pollId: v.id("poll"),
+    telegramInitData: v.string(),
   },
-  handler: async (ctx, { pollId }) => {
-    const userId = await requireUserId(ctx);
+  handler: async (ctx, { pollId, telegramInitData }) => {
+    const userId = await getUserId(telegramInitData, ctx);
+    if (!userId) return [];
     const ballot = await ctx.db
       .query("ballot")
       .withIndex("by_userId_pollId", (q) =>

@@ -8,6 +8,7 @@ import Loading from "@/components/Loading";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/shared/indexByUniqueIdentifier";
+import Telegram from "@twa-dev/sdk";
 import { BottomBar, MainButton, SecondaryButton } from "@twa-dev/sdk/react";
 import classNames from "classnames";
 import { useMutation, useQuery } from "convex/react";
@@ -19,7 +20,10 @@ import { PollContext } from "./Layout";
 export default function VotePageLoader() {
   const { poll } = useOutletContext<PollContext>();
   const candidates = useQuery(api.candidate.list, { pollId: poll._id });
-  const ranking = useQuery(api.ballot.get, { pollId: poll._id });
+  const ranking = useQuery(api.ballot.get, {
+    pollId: poll._id,
+    telegramInitData: Telegram.initData,
+  });
 
   if (candidates === undefined || ranking === undefined) return <Loading />;
 
@@ -92,6 +96,7 @@ function VotePage({
     saveBallot({
       pollId: poll._id,
       ranking: items.ranking as Id<"candidate">[],
+      telegramInitData: Telegram.initData,
     }).catch((error) => {
       console.error("Error saving ballot", error);
     });
