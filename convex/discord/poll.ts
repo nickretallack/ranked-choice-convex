@@ -39,6 +39,6 @@ export const create = mutation({
         }),
       ),
     );
-    return pollId;
+    return (await ctx.db.get(pollId))!;
   },
 });

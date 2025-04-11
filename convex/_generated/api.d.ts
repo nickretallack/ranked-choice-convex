@@ -8,6 +8,7 @@
  * @module
  */
 
+import type * as auth from "../auth.js";
 import type * as ballot from "../ballot.js";
 import type * as candidate from "../candidate.js";
 import type * as discord_poll from "../discord/poll.js";
@@ -26,6 +27,7 @@ import type * as telegram_poll from "../telegram/poll.js";
 import type * as telegram_user from "../telegram/user.js";
 import type * as telegram_webhook from "../telegram/webhook.js";
 import type * as test_testTypes from "../test/testTypes.js";
+import type * as user from "../user.js";
 
 import type {
   ApiFromModules,
@@ -41,6 +43,7 @@ import type {
  * ```
  */
 declare const fullApi: ApiFromModules<{
+  auth: typeof auth;
   ballot: typeof ballot;
   candidate: typeof candidate;
   "discord/poll": typeof discord_poll;
@@ -59,6 +62,7 @@ declare const fullApi: ApiFromModules<{
   "telegram/user": typeof telegram_user;
   "telegram/webhook": typeof telegram_webhook;
   "test/testTypes": typeof test_testTypes;
+  user: typeof user;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

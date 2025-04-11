@@ -1,3 +1,4 @@
+import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -10,7 +11,7 @@ export const telegramUserDetailsFields = {
 };
 
 export default defineSchema({
-  users: defineTable({}), // Plural to support Convex Auth
+  ...authTables,
   poll: defineTable({
     title: v.string(),
     creatorId: v.optional(v.id("users")),

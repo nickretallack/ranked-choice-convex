@@ -82,3 +82,13 @@ async function requirePollOwner(
     throw new Error("You are not the owner of this poll.");
   return { poll, userId };
 }
+
+export const listForUser = query({
+  args: { userId: v.id("users") },
+  handler: async (ctx, { userId }) => {
+    return await ctx.db
+      .query("poll")
+      .withIndex("by_creatorId", (q) => q.eq("creatorId", userId))
+      .collect();
+  },
+});
