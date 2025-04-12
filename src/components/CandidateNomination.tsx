@@ -56,7 +56,8 @@ export function CandidateNomination({
               formRef.current?.reset();
               scrollToCandidate(candidateId);
             },
-            (error) => Telegram.showAlert(error),
+            (error) =>
+              Telegram.initData ? Telegram.showAlert(error) : alert(error),
           );
         }
       }}
