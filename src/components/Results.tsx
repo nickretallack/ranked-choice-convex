@@ -34,30 +34,59 @@ export default function ResultsPage() {
         <Loading />
       )}
 
-      <BottomBar>
-        {isYourPoll &&
-          (poll.closed ? (
-            <MainButton
-              text="Reopen Poll"
-              onClick={() =>
-                void reopenPoll({
-                  id: poll._id,
-                  telegramInitData: Telegram.initData,
-                })
-              }
-            />
-          ) : (
-            <MainButton
-              text="Close Poll"
-              onClick={() =>
-                void closePoll({
-                  id: poll._id,
-                  telegramInitData: Telegram.initData,
-                })
-              }
-            />
-          ))}
-      </BottomBar>
+      {Telegram.initData ? (
+        <BottomBar>
+          {isYourPoll &&
+            (poll.closed ? (
+              <MainButton
+                text="Reopen Poll"
+                onClick={() =>
+                  void reopenPoll({
+                    id: poll._id,
+                    telegramInitData: Telegram.initData,
+                  })
+                }
+              />
+            ) : (
+              <MainButton
+                text="Close Poll"
+                onClick={() =>
+                  void closePoll({
+                    id: poll._id,
+                    telegramInitData: Telegram.initData,
+                  })
+                }
+              />
+            ))}
+        </BottomBar>
+      ) : (
+        isYourPoll &&
+        (poll.closed ? (
+          <button
+            className="button"
+            onClick={() =>
+              void reopenPoll({
+                id: poll._id,
+                telegramInitData: Telegram.initData,
+              })
+            }
+          >
+            Reopen Poll
+          </button>
+        ) : (
+          <button
+            className="button"
+            onClick={() =>
+              void closePoll({
+                id: poll._id,
+                telegramInitData: Telegram.initData,
+              })
+            }
+          >
+            Close Poll
+          </button>
+        ))
+      )}
     </>
   );
 }

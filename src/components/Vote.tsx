@@ -162,27 +162,55 @@ export function VotePage({
         />
       )}
 
-      <BottomBar>
-        {poll.closed ? (
-          <SecondaryButton
-            text="This poll is closed"
-            textColor="#808080"
-            disabled
-          />
-        ) : items.ranking.length > 0 ? (
-          isEqual(ranking, items.ranking) ? (
-            <MainButton text="Voted" disabled color="#808080" />
+      {Telegram.initData ? (
+        <BottomBar>
+          {poll.closed ? (
+            <SecondaryButton
+              text="This poll is closed"
+              textColor="#808080"
+              disabled
+            />
+          ) : items.ranking.length > 0 ? (
+            isEqual(ranking, items.ranking) ? (
+              <MainButton text="Voted" disabled color="#808080" />
+            ) : ranking.length > 0 ? (
+              <MainButton text="Update Vote" onClick={submitVote} />
+            ) : (
+              <MainButton text="Vote" onClick={submitVote} />
+            )
           ) : ranking.length > 0 ? (
-            <MainButton text="Update Vote" onClick={submitVote} />
+            <MainButton text="Withdraw Vote" onClick={submitVote} />
           ) : (
-            <MainButton text="Vote" onClick={submitVote} />
-          )
+            <MainButton text="Vote" disabled color="#808080" />
+          )}
+        </BottomBar>
+      ) : poll.closed ? (
+        <button className="button text" type="submit" disabled>
+          This poll is closed
+        </button>
+      ) : items.ranking.length > 0 ? (
+        isEqual(ranking, items.ranking) ? (
+          <button className="button" disabled color="#808080">
+            Voted
+          </button>
         ) : ranking.length > 0 ? (
-          <MainButton text="Withdraw Vote" onClick={submitVote} />
+          <button className="button" onClick={submitVote}>
+            Update Vote
+          </button>
         ) : (
-          <MainButton text="Vote" disabled color="#808080" />
-        )}
-      </BottomBar>
+          <button className="button" onClick={submitVote}>
+            Vote
+          </button>
+        )
+      ) : ranking.length > 0 ? (
+        <button className="button" onClick={submitVote}>
+          Withdraw Vote
+        </button>
+      ) : (
+        <button className="button" disabled color="#808080">
+          Vote
+        </button>
+      )}
     </>
   );
 }

@@ -10,6 +10,8 @@
   font-weight: 500;
   cursor: pointer;
   transition: opacity 0.2s;
+  display: inline-block;
+  text-align: center;
 }
 
 .button.small {
@@ -19,12 +21,21 @@
   border-radius: 6px;
 }
 
-
 .button:active {
   opacity: 0.6;
 }
 
+.button:disabled:active {
+  opacity: 1;
+}
+
 .button:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
+  background: var(--tg-theme-hint-color);
+}
+
+.button.text {
+  background: transparent;
+  color: #808080;
+  pointer-events: none;
 }

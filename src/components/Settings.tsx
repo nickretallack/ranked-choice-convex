@@ -14,6 +14,7 @@ import { useNavigate, useOutletContext } from "react-router";
 export default function SettingsPageLoader() {
   const { poll, isYourPoll } = useOutletContext<PollContext>();
   const navigate = useNavigate();
+  console.log("Rendered", poll);
 
   useEffect(() => {
     if (!isYourPoll) {
@@ -66,6 +67,7 @@ export function SettingsPage({ poll }: { poll: Doc<"poll"> }) {
     );
   }, [poll, getFormValues]);
 
+  // check for changes to the local data
   useEffect(() => {
     const form = formRef.current;
     if (!form) return;
@@ -82,20 +84,40 @@ export function SettingsPage({ poll }: { poll: Doc<"poll"> }) {
     };
   }, [checkDirty]);
 
+  // check for changes to the server data
+  useEffect(() => {
+    setFormDirty(checkDirty());
+  }, [checkDirty, poll]);
+
   return (
-    <>
-      <form ref={formRef} className="form">
-        <PollTitleField value={poll.title} />
-        <LiveResultsCheckbox value={poll.liveResults} />
-        <AllowNominationsCheckbox value={poll.allowNominations} />
-      </form>
-      <BottomBar>
-        {formDirty ? (
-          <MainButton text="Save Changes" onClick={saveHandler} />
-        ) : (
-          <MainButton text="Saved" disabled color="#808080" />
-        )}
-      </BottomBar>
-    </>
+    <form
+      ref={formRef}
+      className="form"
+      onSubmit={(event) => {
+        event.preventDefault();
+        saveHandler();
+      }}
+    >
+      <PollTitleField value={poll.title} />
+      <LiveResultsCheckbox value={poll.liveResults} />
+      <AllowNominationsCheckbox value={poll.allowNominations} />
+      {Telegram.initData ? (
+        <BottomBar>
+          {formDirty ? (
+            <MainButton text="Save Changes" onClick={saveHandler} />
+          ) : (
+            <MainButton text="Saved" disabled color="#808080" />
+          )}
+        </BottomBar>
+      ) : formDirty ? (
+        <button className="button" type="submit">
+          Save Changes
+        </button>
+      ) : (
+        <button className="button" type="submit" disabled>
+          Saved
+        </button>
+      )}
+    </form>
   );
 }
