@@ -1,13 +1,13 @@
 import { v } from "convex/values";
 import { api } from "./_generated/api";
 import { mutation, query } from "./_generated/server";
-import { getUserId, resolveUserId } from "./telegram/user";
+import { getUserId, resolveUserId } from "./user";
 
 export const save = mutation({
   args: {
     pollId: v.id("poll"),
     ranking: v.array(v.id("candidate")),
-    telegramInitData: v.string(),
+    telegramInitData: v.optional(v.string()),
   },
   handler: async (ctx, { pollId, ranking, telegramInitData }) => {
     const userId = await resolveUserId(ctx, telegramInitData);
@@ -57,7 +57,7 @@ export const save = mutation({
 export const get = query({
   args: {
     pollId: v.id("poll"),
-    telegramInitData: v.string(),
+    telegramInitData: v.optional(v.string()),
   },
   handler: async (ctx, { pollId, telegramInitData }) => {
     const userId = await getUserId(ctx, telegramInitData);

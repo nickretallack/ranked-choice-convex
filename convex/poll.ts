@@ -4,7 +4,7 @@ import { api } from "./_generated/api";
 import { DataModel, Id } from "./_generated/dataModel";
 import { mutation, query } from "./_generated/server";
 import { PollResults, tallyResults } from "./tally";
-import { resolveUserId } from "./telegram/user";
+import { resolveUserId } from "./user";
 
 export const get = query({
   args: { id: v.id("poll") },

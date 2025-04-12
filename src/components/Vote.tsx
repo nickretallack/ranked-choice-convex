@@ -5,6 +5,7 @@ import {
   MultipleContainers,
 } from "@/components/dndkit/MultipleContainers";
 import Loading from "@/components/Loading";
+import { PollContext } from "@/Layout";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/shared/indexByUniqueIdentifier";
@@ -15,7 +16,6 @@ import { useMutation, useQuery } from "convex/react";
 import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router";
-import { PollContext } from "./Layout";
 
 export default function VotePageLoader() {
   const { poll } = useOutletContext<PollContext>();
@@ -30,7 +30,7 @@ export default function VotePageLoader() {
   return <VotePage poll={poll} candidates={candidates} ranking={ranking} />;
 }
 
-function VotePage({
+export function VotePage({
   poll,
   candidates,
   ranking,
@@ -38,6 +38,7 @@ function VotePage({
   poll: Doc<"poll">;
   candidates: Doc<"candidate">[];
   ranking: Id<"candidate">[];
+  telegramInitData?: string | undefined;
 }) {
   const saveBallot = useMutation(api.ballot.save);
 
@@ -104,12 +105,62 @@ function VotePage({
 
   return (
     <>
-      <VotePage
-        poll={poll}
-        candidates={candidates}
-        ranking={ranking}
-        submitVote={submitVote}
-      />
+      <MultipleContainers
+        items={items}
+        setItems={setItems}
+        containerFallbacks={{
+          ranking: (
+            <div className="fallback">Drag candidates here to rank them.</div>
+          ),
+          candidates: (
+            <div className="fallback">
+              Drag candidates here if you don't want to vote for them.
+            </div>
+          ),
+        }}
+        renderItem={({
+          value,
+          listeners,
+          ref,
+          style,
+          classes,
+          handleProps,
+          index,
+          containerId,
+        }) => (
+          <li
+            className={classNames(classes, "ranking-item")}
+            style={style}
+            ref={ref as React.RefObject<HTMLLIElement>}
+            data-cypress="draggable-item"
+            data-candidate-id={value}
+          >
+            <Handle
+              {...handleProps}
+              {...listeners}
+              index={containerId == "ranking" ? index! + 1 : null}
+            />
+            {candidateMap.current.get(value)!.name}
+          </li>
+        )}
+      >
+        {({ containerViews }) => (
+          <div className="vote-split">
+            <div className="ranking">{containerViews["ranking"]}</div>
+            <div className="candidates">
+              <div className="section-header">Candidates</div>
+              {containerViews["candidates"]}
+            </div>
+          </div>
+        )}
+      </MultipleContainers>
+      {poll.allowNominations && (
+        <CandidateNomination
+          pollId={poll._id}
+          candidateMap={candidateMap}
+          scrollToCandidate={scrollToCandidate}
+        />
+      )}
 
       <BottomBar>
         {poll.closed ? (

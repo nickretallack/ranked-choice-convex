@@ -1,7 +1,7 @@
 import { v } from "convex/values";
 import { mutation, query } from "./_generated/server";
 import { normalizeWhitespace } from "./shared/normalizeWhitespace";
-import { resolveUserId } from "./telegram/user";
+import { resolveUserId } from "./user";
 
 export const list = query({
   args: { pollId: v.id("poll") },

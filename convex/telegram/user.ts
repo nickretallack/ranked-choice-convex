@@ -93,7 +93,6 @@ export async function getUserId(
   return null;
 }
 
-// Mutations can use this to get the telegram user's userId regardless of whether they're already in the database
 export async function resolveUserId(
   ctx: GenericMutationCtx<DataModel>,
   initData: string,
@@ -175,4 +174,7 @@ export async function validateWebAppData(
     .join("");
 
   return hash === data.get("hash");
+}
+function useQuery(viewer: any) {
+  throw new Error("Function not implemented.");
 }

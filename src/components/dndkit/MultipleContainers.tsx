@@ -45,6 +45,7 @@ const dropAnimation: DropAnimation = {
   }),
 };
 
+import useBreakpoint from "use-breakpoint";
 import { RenderItem } from "./Item/Item";
 
 type ContainerViews = { [containerId: string]: React.ReactNode };
@@ -62,6 +63,8 @@ interface Props {
   containerFallbacks?: Record<UniqueIdentifier, React.ReactNode>;
 }
 
+const BREAKPOINTS = { mobile: 0, tablet: 768, desktop: 1280 };
+
 export function MultipleContainers({
   items,
   setItems,
@@ -74,7 +77,7 @@ export function MultipleContainers({
   const lastOverId = useRef<UniqueIdentifier | null>(null);
   const recentlyMovedToNewContainer = useRef(false);
   const [theOverId, setTheOverId] = useState<UniqueIdentifier | null>(null);
-
+  const { breakpoint } = useBreakpoint(BREAKPOINTS, "mobile");
   /**
    * Custom collision detection strategy optimized for multiple containers
    *
