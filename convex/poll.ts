@@ -62,7 +62,7 @@ export const close = mutation({
 });
 
 export const reopen = mutation({
-  args: { id: v.id("poll"), telegramInitData: v.string() },
+  args: { id: v.id("poll"), telegramInitData: v.optional(v.string()) },
   handler: async (ctx, { id, telegramInitData }) => {
     await requirePollOwner(ctx, id, telegramInitData);
     return await ctx.db.patch(id, { closed: false });
@@ -72,7 +72,7 @@ export const reopen = mutation({
 async function requirePollOwner(
   ctx: GenericMutationCtx<DataModel>,
   id: Id<"poll">,
-  telegramInitData: string,
+  telegramInitData?: string,
 ) {
   const userId = await resolveUserId(ctx, telegramInitData);
 

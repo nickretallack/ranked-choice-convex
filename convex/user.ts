@@ -23,7 +23,8 @@ export async function resolveUserId(
   if (initData) {
     return await telegramResolveUserId(ctx, initData);
   } else {
-    const user = (await ctx.runQuery(api.user.viewer)) as Doc<"users">;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const user = (await ctx.runQuery(api.user.viewer)) as Doc<"users"> | null;
     return user?._id;
   }
 }
@@ -36,7 +37,8 @@ export async function getUserId(
   if (initData) {
     return await telegramGetUserId(ctx, initData);
   } else {
-    const user = (await ctx.runQuery(api.user.viewer)) as Doc<"users">;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const user = (await ctx.runQuery(api.user.viewer)) as Doc<"users"> | null;
     return user?._id;
   }
 }

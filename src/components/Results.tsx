@@ -1,4 +1,5 @@
 import Loading from "@/components/Loading";
+import { PollContext } from "@/Layout";
 import { api } from "@convex/_generated/api";
 import { Doc, Id } from "@convex/_generated/dataModel";
 import { indexByUniqueIdentifier } from "@convex/shared/indexByUniqueIdentifier";
@@ -7,7 +8,6 @@ import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation, useQuery } from "convex/react";
 import { useEffect } from "react";
 import { useNavigate, useOutletContext } from "react-router";
-import { PollContext } from "./Layout";
 
 export default function ResultsPage() {
   const { poll, isYourPoll } = useOutletContext<PollContext>();

@@ -2,6 +2,7 @@ import Loading from "@/components/Loading";
 import AllowNominationsCheckbox from "@/components/settings/AllowNominationsCheckbox";
 import LiveResultsCheckbox from "@/components/settings/LiveResultsCheckbox";
 import PollTitleField from "@/components/settings/PollTitleField";
+import { PollContext } from "@/Layout";
 import { api } from "@convex/_generated/api";
 import { Doc } from "@convex/_generated/dataModel";
 import Telegram from "@twa-dev/sdk";
@@ -9,7 +10,6 @@ import { BottomBar, MainButton } from "@twa-dev/sdk/react";
 import { useMutation } from "convex/react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useOutletContext } from "react-router";
-import { PollContext } from "./Layout";
 
 export default function SettingsPageLoader() {
   const { poll, isYourPoll } = useOutletContext<PollContext>();

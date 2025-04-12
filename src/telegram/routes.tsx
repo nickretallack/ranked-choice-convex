@@ -1,11 +1,11 @@
+import Vote from "@/components/Vote";
 import { Route } from "react-router";
+import Results from "../components/Results";
+import Settings from "../components/Settings";
 import Layout from "./Layout";
 import NewPoll from "./NewPoll";
-import Results from "./Results";
-import Settings from "./Settings";
 import Start from "./Start";
 import Theme from "./Theme";
-import Vote from "./Vote";
 
 const TelegramRoutes = (
   <Route path="telegram" element={<Theme />}>

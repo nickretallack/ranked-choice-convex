@@ -105,6 +105,9 @@ export async function resolveUserId(
 }
 
 export async function validateInitData(initData: string) {
+  if (!initData) {
+    throw new Error("No init data");
+  }
   const params = new URLSearchParams(initData);
   const isValid = await validateWebAppData(
     process.env.TELEGRAM_BOT_SECRET!,

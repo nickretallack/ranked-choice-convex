@@ -11,6 +11,7 @@ export const save = mutation({
   },
   handler: async (ctx, { pollId, ranking, telegramInitData }) => {
     const userId = await resolveUserId(ctx, telegramInitData);
+    if (!userId) throw new Error("User not found");
 
     const poll = await ctx.db.get(pollId);
     if (!poll) throw new Error("Poll not found");
