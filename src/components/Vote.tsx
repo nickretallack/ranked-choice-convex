@@ -1,4 +1,3 @@
-import { CandidateNomination } from "@/components/CandidateNomination";
 import { Handle } from "@/components/dndkit/Item";
 import {
   Items,
@@ -16,6 +15,7 @@ import { useMutation, useQuery } from "convex/react";
 import { isEqual } from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useOutletContext } from "react-router";
+import { CandidateNomination } from "./CandidateNomination";
 
 export default function VotePageLoader() {
   const { poll } = useOutletContext<PollContext>();
@@ -148,19 +148,21 @@ export function VotePage({
           <div className="vote-split">
             <div className="ranking">{containerViews["ranking"]}</div>
             <div className="candidates">
-              <div className="section-header">Candidates</div>
-              {containerViews["candidates"]}
+              <div className="candidates-container">
+                <div className="section-header">Candidates</div>
+                {containerViews["candidates"]}
+              </div>
+              {poll.allowNominations && (
+                <CandidateNomination
+                  pollId={poll._id}
+                  candidateMap={candidateMap}
+                  scrollToCandidate={scrollToCandidate}
+                />
+              )}
             </div>
           </div>
         )}
       </MultipleContainers>
-      {poll.allowNominations && (
-        <CandidateNomination
-          pollId={poll._id}
-          candidateMap={candidateMap}
-          scrollToCandidate={scrollToCandidate}
-        />
-      )}
 
       {Telegram.initData ? (
         <BottomBar>

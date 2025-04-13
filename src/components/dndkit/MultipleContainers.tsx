@@ -63,7 +63,7 @@ interface Props {
   containerFallbacks?: Record<UniqueIdentifier, React.ReactNode>;
 }
 
-const BREAKPOINTS = { mobile: 0, tablet: 768, desktop: 1280 };
+const BREAKPOINTS = { mobile: 0, desktop: 800 };
 
 export function MultipleContainers({
   items,
@@ -188,7 +188,9 @@ export function MultipleContainers({
       <DroppableContainer key={containerId} id={containerId} items={theItems}>
         <SortableContext
           items={theItems}
-          strategy={verticalListSortingStrategy}
+          strategy={
+            breakpoint === "mobile" ? verticalListSortingStrategy : undefined
+          }
         >
           {theItems.map((value, index) => {
             return (

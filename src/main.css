@@ -29,6 +29,13 @@ body {
   flex: 1;
 }
 
+.container {
+  max-width: 1000px;
+  padding: auto;
+  margin: 0 auto;
+  width: 100%;
+}
+
 h1 {
   margin: 0;
   font-size: 1.5em;
@@ -51,6 +58,12 @@ h1 {
   overflow: hidden;
 }
 
+.candidates-container {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
 .ranking {
   grid-template-rows: 1fr;
   flex-shrink: 1;
@@ -59,8 +72,7 @@ h1 {
 .candidates {
   grid-template-rows: auto 1fr;
   overflow: hidden;
-  max-height: 50%;
-  flex-shrink: 0;
+  gap: 16px;
 }
 
 .fallback {
@@ -131,4 +143,30 @@ h2 {
 
 .highlight-candidate {
   animation: highlightFade 1.5s ease-out;
+}
+
+@media (min-width: 800px) {
+  .vote-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .candidates {
+    display: grid;
+    grid-template-rows: 1fr auto;
+    overflow: hidden;
+  }
+
+  .candidates-container {
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+  }
+}
+
+@media (max-width: 799px) {
+  .candidates {
+    max-height: 50%;
+    flex-shrink: 0;
+  }
 }
