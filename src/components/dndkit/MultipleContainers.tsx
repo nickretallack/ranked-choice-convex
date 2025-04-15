@@ -331,7 +331,7 @@ export function MultipleContainers({
         setActiveId(null);
       }}
       onDragCancel={onDragCancel}
-      modifiers={[restrictToVerticalAxis]}
+      modifiers={breakpoint === "mobile" ? [restrictToVerticalAxis] : []}
     >
       {children({ containerViews })}
       <DragOverlay dropAnimation={dropAnimation}>
