@@ -104,7 +104,7 @@ export function VotePage({
   }, [items.ranking, poll._id, saveBallot]);
 
   return (
-    <>
+    <div className="vote-container">
       <MultipleContainers
         items={items}
         setItems={setItems}
@@ -146,7 +146,12 @@ export function VotePage({
       >
         {({ containerViews }) => (
           <div className="vote-split">
-            <div className="ranking">{containerViews["ranking"]}</div>
+            <div className="ranking">
+              <div className="ranking-container">
+                <div className="section-header">Your Ranking</div>
+                {containerViews["ranking"]}
+              </div>
+            </div>
             <div className="candidates">
               <div className="candidates-container">
                 <div className="section-header">Candidates</div>
@@ -186,33 +191,37 @@ export function VotePage({
             <MainButton text="Vote" disabled color="#808080" />
           )}
         </BottomBar>
-      ) : poll.closed ? (
-        <button className="button text" type="submit" disabled>
-          This poll is closed
-        </button>
-      ) : items.ranking.length > 0 ? (
-        isEqual(ranking, items.ranking) ? (
-          <button className="button" disabled color="#808080">
-            Voted
-          </button>
-        ) : ranking.length > 0 ? (
-          <button className="button" onClick={submitVote}>
-            Update Vote
-          </button>
-        ) : (
-          <button className="button" onClick={submitVote}>
-            Vote
-          </button>
-        )
-      ) : ranking.length > 0 ? (
-        <button className="button" onClick={submitVote}>
-          Withdraw Vote
-        </button>
       ) : (
-        <button className="button" disabled color="#808080">
-          Vote
-        </button>
+        <div className="vote-button">
+          {poll.closed ? (
+            <button className="button text" type="submit" disabled>
+              This poll is closed
+            </button>
+          ) : items.ranking.length > 0 ? (
+            isEqual(ranking, items.ranking) ? (
+              <button className="button" disabled color="#808080">
+                Voted
+              </button>
+            ) : ranking.length > 0 ? (
+              <button className="button" onClick={submitVote}>
+                Update Vote
+              </button>
+            ) : (
+              <button className="button" onClick={submitVote}>
+                Vote
+              </button>
+            )
+          ) : ranking.length > 0 ? (
+            <button className="button" onClick={submitVote}>
+              Withdraw Vote
+            </button>
+          ) : (
+            <button className="button" disabled color="#808080">
+              Vote
+            </button>
+          )}
+        </div>
       )}
-    </>
+    </div>
   );
 }

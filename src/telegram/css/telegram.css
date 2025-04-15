@@ -87,6 +87,10 @@ button {
   gap: 24px;
 }
 
+.spacer {
+  flex: 1;
+}
+
 .text-input {
   width: 100%;
   border: none;

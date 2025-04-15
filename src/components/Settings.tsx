@@ -101,6 +101,7 @@ export function SettingsPage({ poll }: { poll: Doc<"poll"> }) {
       <PollTitleField value={poll.title} />
       <LiveResultsCheckbox value={poll.liveResults} />
       <AllowNominationsCheckbox value={poll.allowNominations} />
+      <div className="spacer" />
       {Telegram.initData ? (
         <BottomBar>
           {formDirty ? (
